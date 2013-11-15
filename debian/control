@@ -1,0 +1,15 @@
+Source: libdotclear-plugin-staticcache
+Section: web
+Priority: optional
+Maintainer: Olivier Meunier <olivier@dotclear.net>
+Build-Depends: debhelper (>= 4.0.0), php5-cli
+Standards-Version: 3.6.1
+
+Package: libdotclear-plugin-staticcache
+Architecture: all
+Depends: ${misc:Depends}, dotclear
+Description: Dotclear Static Cache Module 
+ DotClear is a bloging tool.
+ .
+ Blog pages static cache
+
