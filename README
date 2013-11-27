@@ -9,7 +9,7 @@ DC_SC_CACHE_ENABLE : set to false to disable caching system (default false)
 DC_SC_CACHE_DIR    : full path to cache directory (default to dcstaticcache in your cache directory)
 
 DC_SC_CACHE_BLOGS_ON	: list of blogs ID that should be cached (empty or not defined -> all blogs will be cached)
-DC_SC_CACHE_BLOGS_OFF	: list of blogs ID that must not be cached (empty or not defined -> no blogs will not be cached)
+DC_SC_CACHE_BLOGS_OFF	: list of blogs ID that must not be cached (empty or not defined -> no blogs will be cached)
 
 Note: DC_SC_CACHE_BLOGS_OFF has higher priority than DC_SC_CACHE_BLOGS_ON
 

@@ -9,6 +9,38 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 # -- END LICENSE BLOCK ------------------------------------
 
+class dcStaticCacheControl
+{
+	public static function cacheCurrentBlog()
+	{
+		$ret = true;	// All blogs should be cached
+
+		// DC_BLOG_ID defined : public, otherwise admin
+		$blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : $GLOBALS['core']->blog->id);
+
+		if (defined('DC_SC_CACHE_BLOGS_ON')) {
+			if (DC_SC_CACHE_BLOGS_ON != '') {
+				// Only some blogs should be cached
+				if (!in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_ON))) {
+					// Current blog is not in the "ON" list
+					$ret = false;
+				}
+			}
+		}
+		if (defined('DC_SC_CACHE_BLOGS_OFF')) {
+			if (DC_SC_CACHE_BLOGS_OFF != '') {
+				// Some blogs should not be cached
+				if (in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_OFF))) {
+					// Current blog is in the "OFF" list
+					$ret = false;
+				}
+			}
+		}
+
+		return $ret;
+	}
+}
+
 class dcStaticCache
 {
 	protected $cache_dir;

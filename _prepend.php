@@ -29,6 +29,7 @@ if (!function_exists('touch')) {
 }
 
 $GLOBALS['__autoload']['dcStaticCache'] = dirname(__FILE__).'/class.cache.php';
+$GLOBALS['__autoload']['dcStaticCacheControl'] = dirname(__FILE__).'/class.cache.php';
 
 $core->addBehavior('urlHandlerServeDocument',array('dcStaticCacheBehaviors','urlHandlerServeDocument'));
 $core->addBehavior('publicBeforeDocument',array('dcStaticCacheBehaviors','publicBeforeDocument'));
@@ -36,35 +37,9 @@ $core->addBehavior('coreBlogAfterTriggerBlog',array('dcStaticCacheBehaviors','co
 
 class dcStaticCacheBehaviors
 {
-	public static function cacheCurrentBlog()
-	{
-		$ret = true;	// All blogs should be cached
-
-		if (defined('DC_SC_CACHE_BLOGS_ON')) {
-			if (DC_SC_CACHE_BLOGS_ON != '') {
-				// Only some blogs should be cached
-				if (!in_array(DC_BLOG_ID, explode(',', DC_SC_CACHE_BLOGS_ON))) {
-					// Current blog is not in the "ON" list
-					$ret = false;
-				}
-			}
-		}
-		if (defined('DC_SC_CACHE_BLOGS_OFF')) {
-			if (DC_SC_CACHE_BLOGS_OFF != '') {
-				// Some blogs should not be cached
-				if (in_array(DC_BLOG_ID, explode(',', DC_SC_CACHE_BLOGS_OFF))) {
-					// Current blog is in the "OFF" list
-					$ret = false;
-				}
-			}
-		}
-
-		return $ret;
-	}
-
 	public static function coreBlogAfterTriggerBlog($cur)
 	{
-		if (!dcStaticCacheBehaviors::cacheCurrentBlog()) {
+		if (!dcStaticCacheControl::cacheCurrentBlog()) {
 			return;
 		}
 
@@ -78,7 +53,7 @@ class dcStaticCacheBehaviors
 
 	public static function urlHandlerServeDocument($result)
 	{
-		if (!dcStaticCacheBehaviors::cacheCurrentBlog()) {
+		if (!dcStaticCacheControl::cacheCurrentBlog()) {
 			return;
 		}
 
@@ -114,7 +89,7 @@ class dcStaticCacheBehaviors
 
 	public static function publicBeforeDocument($core)
 	{
-		if (!dcStaticCacheBehaviors::cacheCurrentBlog()) {
+		if (!dcStaticCacheControl::cacheCurrentBlog()) {
 			return;
 		}
 
@@ -141,4 +116,3 @@ class dcStaticCacheBehaviors
 		catch (Exception $e) {}
 	}
 }
-?>

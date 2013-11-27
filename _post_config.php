@@ -33,7 +33,7 @@ if (defined('DC_BLOG_ID')) // Public area detection
 {
 	require dirname(__FILE__).'/class.cache.php';
 
-	if (!dcStaticCacheBehaviors::cacheCurrentBlog()) {
+	if (!dcStaticCacheControl::cacheCurrentBlog()) {
 		return;
 	}
 
@@ -65,4 +65,3 @@ if (defined('DC_BLOG_ID')) // Public area detection
 		unset($cache);
 	}
 }
-?>

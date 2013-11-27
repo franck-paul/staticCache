@@ -12,10 +12,9 @@
 if (!defined('DC_RC_PATH')) { return; }
 
 $this->registerModule(
-	/* Name */			"Static Cache",
+	/* Name */				"Static Cache",
 	/* Description*/		"Blog pages static cache",
 	/* Author */			"Olivier Meunier",
-	/* Version */			'0.8',
+	/* Version */			'0.8.2',
 	/* Permissions */		null
 );
-?>
