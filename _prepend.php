@@ -57,6 +57,11 @@ class dcStaticCacheBehaviors
 			return;
 		}
 
+		// Dirty hack to avoid static cache on preview in admin
+		if (strpos($_SERVER['REQUEST_URI'],'preview/admin/') !== false) {
+			return;
+		}
+
 		try
 		{
 			$cache = new dcStaticCache(DC_SC_CACHE_DIR,md5(http::getHost()));
@@ -90,6 +95,11 @@ class dcStaticCacheBehaviors
 	public static function publicBeforeDocument($core)
 	{
 		if (!dcStaticCacheControl::cacheCurrentBlog()) {
+			return;
+		}
+
+		// Dirty hack to avoid static cache on preview in admin
+		if (strpos($_SERVER['REQUEST_URI'],'preview/admin/') !== false) {
 			return;
 		}
 
