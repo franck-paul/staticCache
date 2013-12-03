@@ -57,8 +57,12 @@ class dcStaticCacheBehaviors
 			return;
 		}
 
-		// Dirty hack to avoid static cache on preview in admin
-		if (strpos($_SERVER['REQUEST_URI'],'preview/admin/') !== false) {
+		# Check requested URL
+		$excluded = array('preview','pagespreview');
+		if (defined('DC_SC_EXCLUDED_URL')) {
+			$excluded = array_merge($excluded,explode(',',DC_SC_EXCLUDED_URL));
+		}
+		if (in_array($GLOBALS['core']->url->type,$excluded)) {
 			return;
 		}
 
@@ -95,11 +99,6 @@ class dcStaticCacheBehaviors
 	public static function publicBeforeDocument($core)
 	{
 		if (!dcStaticCacheControl::cacheCurrentBlog()) {
-			return;
-		}
-
-		// Dirty hack to avoid static cache on preview in admin
-		if (strpos($_SERVER['REQUEST_URI'],'preview/admin/') !== false) {
 			return;
 		}
 

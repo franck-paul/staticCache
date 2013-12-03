@@ -37,11 +37,6 @@ if (defined('DC_BLOG_ID')) // Public area detection
 		return;
 	}
 
-	// Dirty hack to avoid static cache on preview in admin
-	if (strpos($_SERVER['REQUEST_URI'],'preview/admin/') !== false) {
-		return;
-	}
-
 	if (!empty($_POST)) {
 		return;
 	}
