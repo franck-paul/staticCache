@@ -78,14 +78,19 @@ class dcStaticCacheBehaviors
 			}
 
 			# This is a post with a password, no cache
-			if ($result['tpl'] == 'post.html' && $GLOBALS['_ctx']->posts->post_password) {
+			if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && $GLOBALS['_ctx']->posts->post_password) {
 				$do_cache = false;
 			}
 
 			if ($do_cache)
 			{
 				# No POST data or COOKIE, do cache
-				$cache->storePage($_SERVER['REQUEST_URI'],$result['content_type'],$result['content'],$result['blogupddt']);
+				$cache->storePage(
+					$_SERVER['REQUEST_URI'],
+					$result['content_type'],
+					$result['content'],
+					$result['blogupddt'],
+					$result['headers']);
 			}
 			else
 			{

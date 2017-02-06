@@ -92,7 +92,7 @@ class dcStaticCache
 		return filemtime($file);
 	}
 
-	public function storePage($key,$content_type,$content,$mtime)
+	public function storePage($key,$content_type,$content,$mtime,$headers)
 	{
 		if (trim($content) == '') {
 			throw new Exception('No content to cache');
@@ -111,7 +111,15 @@ class dcStaticCache
 			throw new Exception('Unable to create cache file.');
 		}
 
-		fwrite($fp,$content_type."\n\n");
+		// Content-type
+		fwrite($fp,$content_type."\n");
+		// Additional headers
+		foreach ($headers as $header) {
+			fwrite($fp,$header."\n");
+		}
+		// Blank line separator
+		fwrite($fp,"\n");
+		// Page content
 		fwrite($fp,$content);
 		fclose($fp);
 
@@ -141,11 +149,21 @@ class dcStaticCache
 			return false;
 		}
 
+		// Get content-type, 1st line of cached file
 		$content_type = trim(fgets($fp));
-		fgets($fp);
 
 		header('Content-Type: '.$content_type.'; charset=UTF-8');
 		header('X-Dotclear-Static-Cache: true; mtime: '.$page_mtime);
+
+		// Send additionnal cached headers (up to 1st empty line)
+		do {
+			$header = trim(fgets($fp));
+			if ($header !== '') {
+				header($header);
+			}
+		} while ($header !== '');
+
+		// Send everything else (cached content)
 		fpassthru($fp);
 		fclose($fp);
 		return true;
