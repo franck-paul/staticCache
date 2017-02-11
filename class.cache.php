@@ -65,7 +65,7 @@ class dcStaticCache
 
 	public static function initFromURL($cache_dir,$url)
 	{
-		$host = preg_replace('#^(http://(?:.+?))/(.*)$#','$1',$url);
+		$host = preg_replace('#^(https?://(?:.+?))/(.*)$#','$1',$url);
 		return new self($cache_dir,md5($host));
 	}
 
