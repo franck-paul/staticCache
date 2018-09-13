@@ -14,7 +14,7 @@
 
 if (!defined('DC_CONTEXT_ADMIN')) {return;}
 
-$core->addBehavior('dcMaintenanceInit', array('dcStaticCacheAdmin', 'dcMaintenanceInit'));
+$core->addBehavior('dcMaintenanceInit', ['dcStaticCacheAdmin', 'dcMaintenanceInit']);
 
 class dcStaticCacheAdmin
 {

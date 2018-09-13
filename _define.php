@@ -19,8 +19,8 @@ $this->registerModule(
     "Blog pages static cache",          // Description
     "Olivier Meunier and contributors", // Author
     '1.0',                              // Version
-    array(
-        'requires' => array(array('core', '2.12')), // Dependencies
-        'type'     => 'plugin'                     // Type
-    )
+    [
+        'requires' => [['core', '2.13']], // Dependencies
+        'type'     => 'plugin'           // Type
+    ]
 );

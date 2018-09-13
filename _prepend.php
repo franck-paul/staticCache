@@ -34,9 +34,9 @@ if (!function_exists('touch')) {
 $GLOBALS['__autoload']['dcStaticCache']        = dirname(__FILE__) . '/class.cache.php';
 $GLOBALS['__autoload']['dcStaticCacheControl'] = dirname(__FILE__) . '/class.cache.php';
 
-$core->addBehavior('urlHandlerServeDocument', array('dcStaticCacheBehaviors', 'urlHandlerServeDocument'));
-$core->addBehavior('publicBeforeDocument', array('dcStaticCacheBehaviors', 'publicBeforeDocument'));
-$core->addBehavior('coreBlogAfterTriggerBlog', array('dcStaticCacheBehaviors', 'coreBlogAfterTriggerBlog'));
+$core->addBehavior('urlHandlerServeDocument', ['dcStaticCacheBehaviors', 'urlHandlerServeDocument']);
+$core->addBehavior('publicBeforeDocument', ['dcStaticCacheBehaviors', 'publicBeforeDocument']);
+$core->addBehavior('coreBlogAfterTriggerBlog', ['dcStaticCacheBehaviors', 'coreBlogAfterTriggerBlog']);
 
 class dcStaticCacheBehaviors
 {
@@ -60,7 +60,7 @@ class dcStaticCacheBehaviors
         }
 
         # Check requested URL
-        $excluded = array('preview', 'pagespreview');
+        $excluded = ['preview', 'pagespreview'];
         if (defined('DC_SC_EXCLUDED_URL')) {
             $excluded = array_merge($excluded, explode(',', DC_SC_EXCLUDED_URL));
         }
@@ -118,7 +118,7 @@ class dcStaticCacheBehaviors
                 if ($core->blog->url == http::getSelfURI()) {
                     $core->blog->publishScheduledEntries();
                 }
-                http::cache(array($file), $GLOBALS['mod_ts']);
+                http::cache([$file], $GLOBALS['mod_ts']);
                 if ($cache->fetchPage($_SERVER['REQUEST_URI'], $GLOBALS['core']->blog->upddt)) {
                     exit;
                 }
