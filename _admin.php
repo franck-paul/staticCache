@@ -11,8 +11,9 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 
 $core->addBehavior('dcMaintenanceInit', ['dcStaticCacheAdmin', 'dcMaintenanceInit']);
 
@@ -39,7 +40,6 @@ class dcMaintenanceCacheStatic extends dcMaintenanceTask
 
     public function execute()
     {
-
         if (is_dir(DC_SC_CACHE_DIR)) {
             files::deltree(DC_SC_CACHE_DIR);
         }

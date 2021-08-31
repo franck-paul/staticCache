@@ -32,8 +32,7 @@ if (!function_exists('touch')) {
     return;
 }
 
-if (defined('DC_BLOG_ID')) // Public area detection
-{
+if (defined('DC_BLOG_ID')) { // Public area detection
     require dirname(__FILE__) . '/class.cache.php';
 
     if (!dcStaticCacheControl::cacheCurrentBlog()) {
@@ -44,8 +43,7 @@ if (defined('DC_BLOG_ID')) // Public area detection
         return;
     }
 
-    try
-    {
+    try {
         $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
 
         if (($mtime = $cache->getMtime()) === false) {

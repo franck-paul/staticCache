@@ -11,7 +11,6 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
 class dcStaticCacheControl
 {
     public static function cacheCurrentBlog()
@@ -69,6 +68,7 @@ class dcStaticCache
     public static function initFromURL($cache_dir, $url)
     {
         $host = preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', $url);
+
         return new self($cache_dir, md5($host));
     }
 
@@ -169,6 +169,7 @@ class dcStaticCache
         // Send everything else (cached content)
         fpassthru($fp);
         fclose($fp);
+
         return true;
     }
 
@@ -188,6 +189,7 @@ class dcStaticCache
         if (file_exists($file)) {
             return $file;
         }
+
         return false;
     }
 
@@ -195,6 +197,7 @@ class dcStaticCache
     {
         $key = md5($key);
         $k   = str_split($key, 2);
+
         return $this->cache_dir . '/' . sprintf('%s/%s/%s/%s', $k[0], $k[1], $k[2], $key);
     }
 }

@@ -11,8 +11,9 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 if (!defined('DC_SC_CACHE_ENABLE')) {
     define('DC_SC_CACHE_ENABLE', false);
@@ -46,11 +47,11 @@ class dcStaticCacheBehaviors
             return;
         }
 
-        try
-        {
+        try {
             $cache = dcStaticCache::initFromURL(DC_SC_CACHE_DIR, $GLOBALS['core']->blog->url);
             $cache->storeMtime(strtotime($cur->blog_upddt));
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+        }
     }
 
     public static function urlHandlerServeDocument($result)
@@ -68,8 +69,7 @@ class dcStaticCacheBehaviors
             return;
         }
 
-        try
-        {
+        try {
             $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
 
             $do_cache = true;
@@ -96,7 +96,8 @@ class dcStaticCacheBehaviors
                 # Remove cache file
                 $cache->dropPage($_SERVER['REQUEST_URI']);
             }
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+        }
     }
 
     public static function publicBeforeDocument($core)
@@ -109,8 +110,7 @@ class dcStaticCacheBehaviors
             return;
         }
 
-        try
-        {
+        try {
             $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
             $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
@@ -123,6 +123,7 @@ class dcStaticCacheBehaviors
                     exit;
                 }
             }
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+        }
     }
 }
