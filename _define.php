@@ -26,6 +26,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=staticCache',       // Details URL
         'support'    => 'https://github.com/franck-paul/staticCache', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/staticCache/main/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/staticCache/master/dcstore.xml'
     ]
 );
