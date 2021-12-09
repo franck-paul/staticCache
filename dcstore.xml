@@ -1,8 +1,8 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="staticCache">
-    <name>Blog pages static cache</name>
+    <name>Static Cache</name>
     <version>1.0</version>
-    <author>Blog pages static cache</author>
+    <author>Olivier Meunier and contributors</author>
     <desc>Blog pages static cache</desc>
     <file>https://github.com/franck-paul/staticCache/releases/download/1.0/plugin-staticCache-1.0.zip</file>
     <da:dcmin>2.13</da:dcmin>
