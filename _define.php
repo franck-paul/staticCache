@@ -19,13 +19,13 @@ $this->registerModule(
     'Static Cache',                     // Name
     'Blog pages static cache',          // Description
     'Olivier Meunier and contributors', // Author
-    '1.0',                              // Version
+    '1.1',                              // Version
     [
-        'requires' => [['core', '2.13']], // Dependencies
+        'requires' => [['core', '2.21']], // Dependencies
         'type'     => 'plugin',           // Type
 
         'details'    => 'https://open-time.net/?q=staticCache',       // Details URL
         'support'    => 'https://github.com/franck-paul/staticCache', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/staticCache/master/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/staticCache/master/dcstore.xml',
     ]
 );

@@ -97,7 +97,7 @@ class dcStaticCache
 
     public function storePage($key, $content_type, $content, $mtime, $headers)
     {
-        if (trim($content) == '') {
+        if (trim((string) $content) == '') {
             throw new Exception('No content to cache');
         }
 
@@ -116,12 +116,30 @@ class dcStaticCache
 
         // Content-type
         fwrite($fp, $content_type . "\n");
+
         // Additional headers
+        $remove_headers = ['Date', 'Last-Modified', 'Cache-Control'];
         foreach ($headers as $header) {
-            fwrite($fp, $header . "\n");
+            // Ignore some headers as:
+            // Date: Mon, 14 Feb 2022 15:29:55 GMT
+            // Last-Modified: Mon, 14 Feb 2022 15:29:46 GMT
+            // Cache-Control: must-revalidate, max-age=86400
+            $cache_header = true;
+            foreach ($remove_headers as $remove) {
+                if (stripos($header, $remove) === 0) {
+                    $cache_header = false;
+
+                    break;
+                }
+            }
+            if ($cache_header) {
+                fwrite($fp, $header . "\n");
+            }
         }
+
         // Blank line separator
         fwrite($fp, "\n");
+
         // Page content
         fwrite($fp, $content);
         fclose($fp);
@@ -153,14 +171,16 @@ class dcStaticCache
         }
 
         // Get content-type, 1st line of cached file
-        $content_type = trim(fgets($fp));
+        $content_type = trim((string) fgets($fp));
 
+        // This first header might be not necessary (it should already be in stored headers in cache file)
         header('Content-Type: ' . $content_type . '; charset=UTF-8');
+
         header('X-Dotclear-Static-Cache: true; mtime: ' . $page_mtime);
 
         // Send additionnal cached headers (up to 1st empty line)
         do {
-            $header = trim(fgets($fp));
+            $header = trim((string) fgets($fp));
             if ($header !== '') {
                 header($header);
             }

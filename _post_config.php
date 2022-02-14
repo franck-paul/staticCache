@@ -33,7 +33,7 @@ if (!function_exists('touch')) {
 }
 
 if (defined('DC_BLOG_ID')) { // Public area detection
-    require dirname(__FILE__) . '/class.cache.php';
+    require __DIR__ . '/class.cache.php';
 
     if (!dcStaticCacheControl::cacheCurrentBlog()) {
         return;
@@ -47,7 +47,7 @@ if (defined('DC_BLOG_ID')) { // Public area detection
         $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
 
         if (($mtime = $cache->getMtime()) === false) {
-            throw new Exception;
+            throw new Exception();
         }
 
         $file = $cache->getPageFile($_SERVER['REQUEST_URI']);

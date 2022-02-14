@@ -32,8 +32,8 @@ if (!function_exists('touch')) {
     return;
 }
 
-$GLOBALS['__autoload']['dcStaticCache']        = dirname(__FILE__) . '/class.cache.php';
-$GLOBALS['__autoload']['dcStaticCacheControl'] = dirname(__FILE__) . '/class.cache.php';
+$GLOBALS['__autoload']['dcStaticCache']        = __DIR__ . '/class.cache.php';
+$GLOBALS['__autoload']['dcStaticCacheControl'] = __DIR__ . '/class.cache.php';
 
 $core->addBehavior('urlHandlerServeDocument', ['dcStaticCacheBehaviors', 'urlHandlerServeDocument']);
 $core->addBehavior('publicBeforeDocument', ['dcStaticCacheBehaviors', 'publicBeforeDocument']);
@@ -91,7 +91,8 @@ class dcStaticCacheBehaviors
                     $result['content_type'],
                     $result['content'],
                     $result['blogupddt'],
-                    $result['headers']);
+                    $result['headers']
+                );
             } else {
                 # Remove cache file
                 $cache->dropPage($_SERVER['REQUEST_URI']);
