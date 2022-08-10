@@ -35,9 +35,9 @@ if (!function_exists('touch')) {
 $GLOBALS['__autoload']['dcStaticCache']        = __DIR__ . '/class.cache.php';
 $GLOBALS['__autoload']['dcStaticCacheControl'] = __DIR__ . '/class.cache.php';
 
-$core->addBehavior('urlHandlerServeDocument', ['dcStaticCacheBehaviors', 'urlHandlerServeDocument']);
-$core->addBehavior('publicBeforeDocument', ['dcStaticCacheBehaviors', 'publicBeforeDocument']);
-$core->addBehavior('coreBlogAfterTriggerBlog', ['dcStaticCacheBehaviors', 'coreBlogAfterTriggerBlog']);
+dcCore::app()->addBehavior('urlHandlerServeDocument', ['dcStaticCacheBehaviors', 'urlHandlerServeDocument']);
+dcCore::app()->addBehavior('publicBeforeDocument', ['dcStaticCacheBehaviors', 'publicBeforeDocument']);
+dcCore::app()->addBehavior('coreBlogAfterTriggerBlog', ['dcStaticCacheBehaviors', 'coreBlogAfterTriggerBlog']);
 
 class dcStaticCacheBehaviors
 {
@@ -48,7 +48,7 @@ class dcStaticCacheBehaviors
         }
 
         try {
-            $cache = dcStaticCache::initFromURL(DC_SC_CACHE_DIR, $GLOBALS['core']->blog->url);
+            $cache = dcStaticCache::initFromURL(DC_SC_CACHE_DIR, dcCore::app()->blog->url);
             $cache->storeMtime(strtotime($cur->blog_upddt));
         } catch (Exception $e) {
         }
@@ -65,7 +65,7 @@ class dcStaticCacheBehaviors
         if (defined('DC_SC_EXCLUDED_URL')) {
             $excluded = array_merge($excluded, explode(',', DC_SC_EXCLUDED_URL));
         }
-        if (in_array($GLOBALS['core']->url->type, $excluded)) {
+        if (in_array(dcCore::app()->url->type, $excluded)) {
             return;
         }
 
@@ -101,7 +101,7 @@ class dcStaticCacheBehaviors
         }
     }
 
-    public static function publicBeforeDocument($core)
+    public static function publicBeforeDocument($core = null)
     {
         if (!dcStaticCacheControl::cacheCurrentBlog()) {
             return;
@@ -116,11 +116,11 @@ class dcStaticCacheBehaviors
             $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
             if ($file !== false) {
-                if ($core->blog->url == http::getSelfURI()) {
-                    $core->blog->publishScheduledEntries();
+                if (dcCore::app()->blog->url == http::getSelfURI()) {
+                    dcCore::app()->blog->publishScheduledEntries();
                 }
                 http::cache([$file], $GLOBALS['mod_ts']);
-                if ($cache->fetchPage($_SERVER['REQUEST_URI'], $GLOBALS['core']->blog->upddt)) {
+                if ($cache->fetchPage($_SERVER['REQUEST_URI'], dcCore::app()->blog->upddt)) {
                     exit;
                 }
             }

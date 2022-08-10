@@ -18,7 +18,7 @@ class dcStaticCacheControl
         $ret = true; // All blogs should be cached
 
         // DC_BLOG_ID defined : public, otherwise admin
-        $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : $GLOBALS['core']->blog->id);
+        $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : dcCore::app()->blog->id);
 
         if (defined('DC_SC_CACHE_BLOGS_ON')) {
             if (DC_SC_CACHE_BLOGS_ON != '') {
