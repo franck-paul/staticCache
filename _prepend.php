@@ -32,12 +32,10 @@ if (!function_exists('touch')) {
     return;
 }
 
-$GLOBALS['__autoload']['dcStaticCache']        = __DIR__ . '/class.cache.php';
-$GLOBALS['__autoload']['dcStaticCacheControl'] = __DIR__ . '/class.cache.php';
-
-dcCore::app()->addBehavior('urlHandlerServeDocument', ['dcStaticCacheBehaviors', 'urlHandlerServeDocument']);
-dcCore::app()->addBehavior('publicBeforeDocument', ['dcStaticCacheBehaviors', 'publicBeforeDocument']);
-dcCore::app()->addBehavior('coreBlogAfterTriggerBlog', ['dcStaticCacheBehaviors', 'coreBlogAfterTriggerBlog']);
+Clearbricks::lib()->autoload([
+    'dcStaticCache'        => __DIR__ . '/class.cache.php',
+    'dcStaticCacheControl' => __DIR__ . '/class.cache.php',
+]);
 
 class dcStaticCacheBehaviors
 {
@@ -51,6 +49,7 @@ class dcStaticCacheBehaviors
             $cache = dcStaticCache::initFromURL(DC_SC_CACHE_DIR, dcCore::app()->blog->url);
             $cache->storeMtime(strtotime($cur->blog_upddt));
         } catch (Exception $e) {
+            // Ignore exceptions
         }
     }
 
@@ -80,7 +79,7 @@ class dcStaticCacheBehaviors
             }
 
             # This is a post with a password, no cache
-            if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && $GLOBALS['_ctx']->posts->post_password) {
+            if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && dcCore::app()->ctx->posts->post_password) {
                 $do_cache = false;
             }
 
@@ -98,10 +97,11 @@ class dcStaticCacheBehaviors
                 $cache->dropPage($_SERVER['REQUEST_URI']);
             }
         } catch (Exception $e) {
+            // Ignore exceptions
         }
     }
 
-    public static function publicBeforeDocument($core = null)
+    public static function publicBeforeDocument()
     {
         if (!dcStaticCacheControl::cacheCurrentBlog()) {
             return;
@@ -119,12 +119,17 @@ class dcStaticCacheBehaviors
                 if (dcCore::app()->blog->url == http::getSelfURI()) {
                     dcCore::app()->blog->publishScheduledEntries();
                 }
-                http::cache([$file], $GLOBALS['mod_ts']);
+                http::cache([$file], dcCore::app()->cache['mod_ts']);
                 if ($cache->fetchPage($_SERVER['REQUEST_URI'], dcCore::app()->blog->upddt)) {
                     exit;
                 }
             }
         } catch (Exception $e) {
+            // Ignore exceptions
         }
     }
 }
+
+dcCore::app()->addBehavior('urlHandlerServeDocument', [dcStaticCacheBehaviors::class, 'urlHandlerServeDocument']);
+dcCore::app()->addBehavior('publicBeforeDocumentV2', [dcStaticCacheBehaviors::class, 'publicBeforeDocument']);
+dcCore::app()->addBehavior('coreBlogAfterTriggerBlog', [dcStaticCacheBehaviors::class, 'coreBlogAfterTriggerBlog']);

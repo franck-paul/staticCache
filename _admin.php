@@ -15,21 +15,11 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-dcCore::app()->addBehavior('dcMaintenanceInit', ['dcStaticCacheAdmin', 'dcMaintenanceInit']);
-
-class dcStaticCacheAdmin
-{
-    public static function dcMaintenanceInit($maintenance)
-    {
-        $maintenance->addTask('dcMaintenanceCacheStatic');
-    }
-}
-
 class dcMaintenanceCacheStatic extends dcMaintenanceTask
 {
     protected $group = 'purge';
 
-    protected function init()
+    protected function init(): void
     {
         $this->task    = __('Empty static cache directory');
         $this->success = __('Static cache directory emptied.');
@@ -47,3 +37,13 @@ class dcMaintenanceCacheStatic extends dcMaintenanceTask
         return true;
     }
 }
+
+class dcStaticCacheAdmin
+{
+    public static function dcMaintenanceInit($maintenance)
+    {
+        $maintenance->addTask(dcMaintenanceCacheStatic::class);
+    }
+}
+
+dcCore::app()->addBehavior('dcMaintenanceInit', [dcStaticCacheAdmin::class, 'dcMaintenanceInit']);

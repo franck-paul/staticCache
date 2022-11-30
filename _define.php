@@ -19,9 +19,9 @@ $this->registerModule(
     'Static Cache',                     // Name
     'Blog pages static cache',          // Description
     'Olivier Meunier and contributors', // Author
-    '1.2',                              // Version
+    '2.0',                              // Version
     [
-        'requires' => [['core', '2.23']], // Dependencies
+        'requires' => [['core', '2.24']], // Dependencies
         'type'     => 'plugin',           // Type
 
         'details'    => 'https://open-time.net/?q=staticCache',       // Details URL

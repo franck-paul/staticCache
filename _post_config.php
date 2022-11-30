@@ -33,7 +33,7 @@ if (!function_exists('touch')) {
 }
 
 if (defined('DC_BLOG_ID')) { // Public area detection
-    require __DIR__ . '/class.cache.php';
+    require_once __DIR__ . '/class.cache.php';
 
     if (!dcStaticCacheControl::cacheCurrentBlog()) {
         return;
