@@ -11,17 +11,13 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
-
 $this->registerModule(
     'Static Cache',                     // Name
     'Blog pages static cache',          // Description
     'Olivier Meunier and contributors', // Author
-    '2.0',                              // Version
+    '2.1',                              // Version
     [
-        'requires' => [['core', '2.24']], // Dependencies
+        'requires' => [['core', '2.26']], // Dependencies
         'type'     => 'plugin',           // Type
 
         'details'    => 'https://open-time.net/?q=staticCache',       // Details URL

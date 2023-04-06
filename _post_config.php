@@ -12,6 +12,8 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use Dotclear\Helper\Network\Http;
+
 # This file needs to be called at the end of your configuration
 # file. See README for more details
 
@@ -44,7 +46,7 @@ if (defined('DC_BLOG_ID')) { // Public area detection
     }
 
     try {
-        $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
+        $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
 
         if (($mtime = $cache->getMtime()) === false) {
             throw new Exception();
@@ -53,14 +55,13 @@ if (defined('DC_BLOG_ID')) { // Public area detection
         $file = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
         if ($file !== false) {
-            http::cache([$file], [$mtime]);
+            Http::cache([$file], [$mtime]);
             if ($cache->fetchPage($_SERVER['REQUEST_URI'], $mtime)) {
                 exit;
             }
         }
-
-        unset($cache);
     } catch (Exception $e) {
+    } finally {
         unset($cache);
     }
 }

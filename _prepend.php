@@ -11,9 +11,9 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
+
+use Dotclear\Helper\Clearbricks;
+use Dotclear\Helper\Network\Http;
 
 if (!defined('DC_SC_CACHE_ENABLE')) {
     define('DC_SC_CACHE_ENABLE', false);
@@ -69,7 +69,7 @@ class dcStaticCacheBehaviors
         }
 
         try {
-            $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
+            $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
 
             $do_cache = true;
 
@@ -112,14 +112,14 @@ class dcStaticCacheBehaviors
         }
 
         try {
-            $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(http::getHost()));
+            $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
             $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
             if ($file !== false) {
-                if (dcCore::app()->blog->url == http::getSelfURI()) {
+                if (dcCore::app()->blog->url == Http::getSelfURI()) {
                     dcCore::app()->blog->publishScheduledEntries();
                 }
-                http::cache([$file], dcCore::app()->cache['mod_ts']);
+                Http::cache([$file], dcCore::app()->cache['mod_ts']);
                 if ($cache->fetchPage($_SERVER['REQUEST_URI'], dcCore::app()->blog->upddt)) {
                     exit;
                 }
@@ -130,6 +130,8 @@ class dcStaticCacheBehaviors
     }
 }
 
-dcCore::app()->addBehavior('urlHandlerServeDocument', [dcStaticCacheBehaviors::class, 'urlHandlerServeDocument']);
-dcCore::app()->addBehavior('publicBeforeDocumentV2', [dcStaticCacheBehaviors::class, 'publicBeforeDocument']);
-dcCore::app()->addBehavior('coreBlogAfterTriggerBlog', [dcStaticCacheBehaviors::class, 'coreBlogAfterTriggerBlog']);
+dcCore::app()->addBehaviors([
+    'urlHandlerServeDocument'  => [dcStaticCacheBehaviors::class, 'urlHandlerServeDocument'],
+    'publicBeforeDocumentV2'   => [dcStaticCacheBehaviors::class, 'publicBeforeDocument'],
+    'coreBlogAfterTriggerBlog' => [dcStaticCacheBehaviors::class, 'coreBlogAfterTriggerBlog'],
+]);

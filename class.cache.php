@@ -11,6 +11,10 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\File\Files;
+use Dotclear\Helper\File\Path;
+
 class dcStaticCacheControl
 {
     public static function cacheCurrentBlog()
@@ -46,10 +50,10 @@ class dcStaticCache
 
     public function __construct($cache_dir, $cache_key)
     {
-        $cache_dir = path::real($cache_dir, false);
+        $cache_dir = Path::real($cache_dir, false);
 
         if (!is_dir($cache_dir)) {
-            files::makeDir($cache_dir);
+            Files::makeDir($cache_dir);
         }
 
         if (!is_writable($cache_dir)) {
@@ -63,7 +67,7 @@ class dcStaticCache
 
     public static function initFromURL($cache_dir, $url)
     {
-        $host = preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', $url);
+        $host = preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', (string) $url);
 
         return new self($cache_dir, md5($host));
     }
@@ -74,7 +78,7 @@ class dcStaticCache
         $dir  = dirname($file);
 
         if (!is_dir($dir)) {
-            files::makeDir($dir, true);
+            Files::makeDir($dir, true);
         }
 
         touch($file, $mtime);
@@ -102,7 +106,7 @@ class dcStaticCache
         $tmp_file = $dir . '/._' . basename($file);
 
         if (!is_dir($dir)) {
-            files::makeDir($dir, true);
+            Files::makeDir($dir, true);
         }
 
         $fp = @fopen($tmp_file, 'wb');
@@ -146,13 +150,13 @@ class dcStaticCache
         rename($tmp_file, $file);
         touch($file, $mtime);
         $this->storeMtime($mtime);
-        files::inheritChmod($file);
+        Files::inheritChmod($file);
     }
 
     public function fetchPage($key, $mtime)
     {
         $file = $this->getCacheFileName($key);
-        if (!file_exists($file) || !is_readable($file) || !files::isDeletable($file)) {
+        if (!file_exists($file) || !is_readable($file) || !Files::isDeletable($file)) {
             return false;
         }
 
@@ -192,7 +196,7 @@ class dcStaticCache
     public function dropPage($key)
     {
         $file = $this->getCacheFileName($key);
-        if (!file_exists($file) || !files::isDeletable($file)) {
+        if (!file_exists($file) || !Files::isDeletable($file)) {
             return false;
         }
 

@@ -17,13 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Empty static cache directory"
-msgstr "Vider le répertoire de cache statique"
+msgstr ""
 
 msgid "Static cache directory emptied."
-msgstr "Le répertoire de cache statique a été vidé."
+msgstr ""
 
 msgid "Failed to empty static cache directory."
-msgstr "Le répertoire de cache statique n'a pu être vidé."
+msgstr ""
 
 msgid "It may be useful to empty this cache when modifying a theme's .html or .css files (or when updating a theme or plugin). Notice : with some hosters, the templates cache cannot be emptied with this plugin."
-msgstr "Il peut être utile de vider ce cache statique lorsque vous modifiez un fichier de thème (html ou css), ou si vous mettez à jour un thème ou un plugin. Note : chez certain·e·s hébergeur·euse·s le répertoire de cache statique ne pourra être vidé avec ce plugin."
+msgstr ""

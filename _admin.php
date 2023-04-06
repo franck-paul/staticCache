@@ -11,11 +11,15 @@
  * @copyright Olivier Meunier
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\File\Files;
+use Dotclear\Plugin\maintenance\MaintenanceTask;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-class dcMaintenanceCacheStatic extends dcMaintenanceTask
+class dcMaintenanceCacheStatic extends MaintenanceTask
 {
     protected $group = 'purge';
 
@@ -31,7 +35,7 @@ class dcMaintenanceCacheStatic extends dcMaintenanceTask
     public function execute()
     {
         if (is_dir(DC_SC_CACHE_DIR)) {
-            files::deltree(DC_SC_CACHE_DIR);
+            Files::deltree(DC_SC_CACHE_DIR);
         }
 
         return true;
