@@ -12,12 +12,12 @@
  */
 declare(strict_types=1);
 
-namespace Dotclear\Plugin\staticCache;
+namespace Dotclear\Plugin\staticCache\MaintenanceTask;
 
 use Dotclear\Helper\File\Files;
 use Dotclear\Plugin\maintenance\MaintenanceTask;
 
-class Maintenance extends MaintenanceTask
+class StaticCache extends MaintenanceTask
 {
     protected $group = 'purge';
 

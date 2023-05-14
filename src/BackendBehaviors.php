@@ -14,10 +14,17 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
+use Dotclear\Plugin\staticCache\MaintenanceTask\StaticCache;
+
 class BackendBehaviors
 {
+    /**
+     * Add maintenance task to delete static cache
+     *
+     * @param  \dcMaintenance $maintenance
+     */
     public static function dcMaintenanceInit($maintenance)
     {
-        $maintenance->addTask(Maintenance::class);
+        $maintenance->addTask(StaticCache::class);
     }
 }
