@@ -5,48 +5,29 @@
  * @package Dotclear
  * @subpackage Plugins
  *
- * @author Olivier
- * @author Franck Paul
+ * @author Franck Paul and contributors
  *
- * @copyright Olivier Meunier
+ * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
-use Dotclear\Helper\Clearbricks;
+namespace Dotclear\Plugin\staticCache;
+
+use dcCore;
 use Dotclear\Helper\Network\Http;
+use Exception;
 
-if (!defined('DC_SC_CACHE_ENABLE')) {
-    define('DC_SC_CACHE_ENABLE', false);
-}
-
-if (!defined('DC_SC_CACHE_DIR')) {
-    define('DC_SC_CACHE_DIR', DC_TPL_CACHE . '/dcstaticcache');
-}
-
-if (!DC_SC_CACHE_ENABLE) {
-    return;
-}
-
-# We need touch function
-if (!function_exists('touch')) {
-    return;
-}
-
-Clearbricks::lib()->autoload([
-    'dcStaticCache'        => __DIR__ . '/class.cache.php',
-    'dcStaticCacheControl' => __DIR__ . '/class.cache.php',
-]);
-
-class dcStaticCacheBehaviors
+class CoreBehaviors
 {
     public static function coreBlogAfterTriggerBlog($cur)
     {
-        if (!dcStaticCacheControl::cacheCurrentBlog()) {
+        if (!StaticCacheControl::cacheCurrentBlog()) {
             return;
         }
 
         try {
-            $cache = dcStaticCache::initFromURL(DC_SC_CACHE_DIR, dcCore::app()->blog->url);
+            $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, dcCore::app()->blog->url);
             $cache->storeMtime(strtotime($cur->blog_upddt));
         } catch (Exception $e) {
             // Ignore exceptions
@@ -55,7 +36,7 @@ class dcStaticCacheBehaviors
 
     public static function urlHandlerServeDocument($result)
     {
-        if (!dcStaticCacheControl::cacheCurrentBlog()) {
+        if (!StaticCacheControl::cacheCurrentBlog()) {
             return;
         }
 
@@ -69,7 +50,7 @@ class dcStaticCacheBehaviors
         }
 
         try {
-            $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
+            $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
 
             $do_cache = true;
 
@@ -103,7 +84,7 @@ class dcStaticCacheBehaviors
 
     public static function publicBeforeDocument()
     {
-        if (!dcStaticCacheControl::cacheCurrentBlog()) {
+        if (!StaticCacheControl::cacheCurrentBlog()) {
             return;
         }
 
@@ -112,7 +93,7 @@ class dcStaticCacheBehaviors
         }
 
         try {
-            $cache = new dcStaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
+            $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
             $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
             if ($file !== false) {
@@ -129,9 +110,3 @@ class dcStaticCacheBehaviors
         }
     }
 }
-
-dcCore::app()->addBehaviors([
-    'urlHandlerServeDocument'  => [dcStaticCacheBehaviors::class, 'urlHandlerServeDocument'],
-    'publicBeforeDocumentV2'   => [dcStaticCacheBehaviors::class, 'publicBeforeDocument'],
-    'coreBlogAfterTriggerBlog' => [dcStaticCacheBehaviors::class, 'coreBlogAfterTriggerBlog'],
-]);

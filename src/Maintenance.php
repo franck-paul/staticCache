@@ -5,21 +5,19 @@
  * @package Dotclear
  * @subpackage Plugins
  *
- * @author Olivier
- * @author Franck Paul
+ * @author Franck Paul and contributors
  *
- * @copyright Olivier Meunier
+ * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\staticCache;
 
 use Dotclear\Helper\File\Files;
 use Dotclear\Plugin\maintenance\MaintenanceTask;
 
-if (!defined('DC_CONTEXT_ADMIN')) {
-    return;
-}
-
-class dcMaintenanceCacheStatic extends MaintenanceTask
+class Maintenance extends MaintenanceTask
 {
     protected $group = 'purge';
 
@@ -41,13 +39,3 @@ class dcMaintenanceCacheStatic extends MaintenanceTask
         return true;
     }
 }
-
-class dcStaticCacheAdmin
-{
-    public static function dcMaintenanceInit($maintenance)
-    {
-        $maintenance->addTask(dcMaintenanceCacheStatic::class);
-    }
-}
-
-dcCore::app()->addBehavior('dcMaintenanceInit', [dcStaticCacheAdmin::class, 'dcMaintenanceInit']);
