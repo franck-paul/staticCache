@@ -20,7 +20,7 @@ use Dotclear\Plugin\staticCache\StaticCacheControl;
 // Add plugin namespace as it is still not loaded yet
 App::autoload()->addNamespace(
     implode(Autoloader::NS_SEP, ['', 'Dotclear', 'Plugin', basename(__DIR__)]),
-    __DIR__ . DIRECTORY_SEPARATOR . dcModules::MODULE_CLASS_DIR
+    __DIR__ . DIRECTORY_SEPARATOR . 'src'
 );
 
 # This file needs to be called at the end of your configuration
