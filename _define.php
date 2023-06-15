@@ -12,16 +12,16 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 $this->registerModule(
-    'Static Cache',                     // Name
-    'Blog pages static cache',          // Description
-    'Olivier Meunier and contributors', // Author
-    '2.3.1',                            // Version
+    'Static Cache',
+    'Blog pages static cache',
+    'Olivier Meunier and contributors',
+    '2.4',
     [
-        'requires' => [['core', '2.26']], // Dependencies
-        'type'     => 'plugin',           // Type
+        'requires' => [['core', '2.26']],
+        'type'     => 'plugin',
 
-        'details'    => 'https://open-time.net/?q=staticCache',       // Details URL
-        'support'    => 'https://github.com/franck-paul/staticCache', // Support URL
+        'details'    => 'https://open-time.net/?q=staticCache',
+        'support'    => 'https://github.com/franck-paul/staticCache',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/staticCache/master/dcstore.xml',
     ]
 );
