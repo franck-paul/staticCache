@@ -31,51 +31,12 @@ class My extends MyPlugin
      */
     public static function checkCustomContext(int $context): ?bool
     {
-        switch ($context) {
-            case self::BACKEND:
-                // Backend context
-                // ---------------
-                // As soon as a connected user should have access to at least one functionnality of the module
-                // Note that PERMISSION_ADMIN implies all permissions on current blog
-
-                return defined('DC_CONTEXT_ADMIN')
-                    // Check specific permission
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                ;
-
-            case self::MANAGE:
-                // Main page of module
-                // -------------------
-                // In almost all cases, only blog admin and super-admin should be able to manage a module
-
-                return defined('DC_CONTEXT_ADMIN')
-                    // Check specific permission
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                ;
-
-            case self::MENU:
-                // Admin menu
-                // ----------
-                // In almost all cases, only blog admin and super-admin should be able to add a menuitem if
-                // the main page of module is used for configuration, but it may be necessary to modify this
-                // if the page is used to manage anything else
-
-                return defined('DC_CONTEXT_ADMIN')
-                    // Check specific permission
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                ;
-
-            case self::WIDGETS:
-                // Blog widgets
-                // ------------
-                // In almost all cases, only blog admin and super-admin should be able to manage blog's widgets
-
-                return defined('DC_CONTEXT_ADMIN')
-                    // Check specific permission
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                ;
-        }
-
-        return null;
+        return match ($context) {
+            self::BACKEND,
+            self::MANAGE,
+            self::MENU,
+            self::WIDGETS => defined('DC_CONTEXT_ADMIN') && dcCore::app()->auth->isSuperAdmin(),
+            default       => null,
+        };
     }
 }
