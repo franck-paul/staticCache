@@ -32,39 +32,6 @@ class My extends MyPlugin
     public static function checkCustomContext(int $context): ?bool
     {
         switch ($context) {
-            case self::INSTALL:
-                // Installation of module
-                // ----------------------
-                // In almost all cases, only super-admin should be able to install a module
-
-                return defined('DC_CONTEXT_ADMIN')
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                    && dcCore::app()->newVersion(self::id(), dcCore::app()->plugins->moduleInfo(self::id(), 'version'))
-                ;
-
-            case self::UNINSTALL:
-                // Uninstallation of module
-                // ------------------------
-                // In almost all cases, only super-admin should be able to uninstall a module
-
-                return defined('DC_RC_PATH')
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                ;
-
-            case self::PREPEND:
-                // Prepend context
-                // ---------------
-
-                return defined('DC_RC_PATH')
-                ;
-
-            case self::FRONTEND:
-                // Frontend context
-                // ----------------
-
-                return defined('DC_RC_PATH')
-                ;
-
             case self::BACKEND:
                 // Backend context
                 // ---------------
@@ -83,15 +50,6 @@ class My extends MyPlugin
 
                 return defined('DC_CONTEXT_ADMIN')
                     // Check specific permission
-                    && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
-                ;
-
-            case self::CONFIG:
-                // Config page of module
-                // ---------------------
-                // In almost all cases, only super-admin should be able to configure a module
-
-                return defined('DC_CONTEXT_ADMIN')
                     && dcCore::app()->auth->isSuperAdmin()   // Super-admin only
                 ;
 
@@ -119,27 +77,5 @@ class My extends MyPlugin
         }
 
         return null;
-    }
-
-    /**
-     * Return URL regexp scheme cope by the plugin
-     *
-     * @return     string
-     */
-    public static function urlScheme(): string
-    {
-        return '/' . preg_quote(dcCore::app()->admin->url->get('admin.plugin.' . self::id())) . '(&.*)?$/';
-    }
-
-    /**
-     * Makes an url including optionnal parameters.
-     *
-     * @param      array   $params  The parameters
-     *
-     * @return     string
-     */
-    public static function makeUrl(array $params = []): string
-    {
-        return dcCore::app()->admin->url->get('admin.plugin.' . self::id(), $params);
     }
 }
