@@ -29,7 +29,7 @@ class CoreBehaviors
         try {
             $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, dcCore::app()->blog->url);
             $cache->storeMtime(strtotime($cur->blog_upddt));
-        } catch (Exception $e) {
+        } catch (Exception) {
             // Ignore exceptions
         }
     }
@@ -77,12 +77,12 @@ class CoreBehaviors
                 # Remove cache file
                 $cache->dropPage($_SERVER['REQUEST_URI']);
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             // Ignore exceptions
         }
     }
 
-    public static function publicBeforeDocument()
+    public static function publicBeforeDocumentV2()
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
             return;
@@ -105,7 +105,7 @@ class CoreBehaviors
                     exit;
                 }
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             // Ignore exceptions
         }
     }

@@ -15,11 +15,10 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\staticCache;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Prepend extends dcNsProcess
+class Prepend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
         if (!defined('DC_SC_CACHE_ENABLE')) {
@@ -30,21 +29,19 @@ class Prepend extends dcNsProcess
             define('DC_SC_CACHE_DIR', DC_TPL_CACHE . DIRECTORY_SEPARATOR . 'dcstaticcache');
         }
 
-        static::$init = My::checkContext(My::PREPEND) && DC_SC_CACHE_ENABLE && function_exists('touch');
-
-        return static::$init;
+        return self::status(My::checkContext(My::PREPEND) && DC_SC_CACHE_ENABLE && function_exists('touch'));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         dcCore::app()->addBehaviors([
-            'urlHandlerServeDocument'  => [CoreBehaviors::class, 'urlHandlerServeDocument'],
-            'publicBeforeDocumentV2'   => [CoreBehaviors::class, 'publicBeforeDocument'],
-            'coreBlogAfterTriggerBlog' => [CoreBehaviors::class, 'coreBlogAfterTriggerBlog'],
+            'urlHandlerServeDocument'  => CoreBehaviors::urlHandlerServeDocument(...),
+            'publicBeforeDocumentV2'   => CoreBehaviors::publicBeforeDocumentV2(...),
+            'coreBlogAfterTriggerBlog' => CoreBehaviors::coreBlogAfterTriggerBlog(...),
         ]);
 
         return true;

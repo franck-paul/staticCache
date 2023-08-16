@@ -17,7 +17,7 @@ $this->registerModule(
     'Olivier Meunier and contributors',
     '2.4.1',
     [
-        'requires' => [['core', '2.26']],
+        'requires' => [['core', '2.27'], ['php', '8.1']],
         'type'     => 'plugin',
 
         'details'    => 'https://open-time.net/?q=staticCache',

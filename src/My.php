@@ -15,66 +15,13 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\staticCache;
 
 use dcCore;
-use dcPage;
+use Dotclear\Module\MyPlugin;
 
 /**
  * Plugin definitions
  */
-class My
+class My extends MyPlugin
 {
-    /**
-     * This module id
-     */
-    public static function id(): string
-    {
-        return basename(dirname(__DIR__));
-    }
-
-    /**
-     * This module name
-     */
-    public static function name(): string
-    {
-        return __((string) dcCore::app()->plugins->moduleInfo(self::id(), 'name'));
-    }
-
-    /**
-     * This module directory path
-     */
-    public static function path(): string
-    {
-        return dirname(__DIR__);
-    }
-
-    // Contexts
-
-    /** @var int Install context */
-    public const INSTALL = 0;
-
-    /** @var int Prepend context */
-    public const PREPEND = 1;
-
-    /** @var int Frontend context */
-    public const FRONTEND = 2;
-
-    /** @var int Backend context (usually when the connected user may access at least one functionnality of this module) */
-    public const BACKEND = 3;
-
-    /** @var int Manage context (main page of module) */
-    public const MANAGE = 4;
-
-    /** @var int Config context (config page of module) */
-    public const CONFIG = 5;
-
-    /** @var int Menu context (adding a admin menu item) */
-    public const MENU = 6;
-
-    /** @var int Widgets context (managing blog's widgets) */
-    public const WIDGETS = 7;
-
-    /** @var int Uninstall context */
-    public const UNINSTALL = 8;
-
     /**
      * Check permission depending on given context
      *
@@ -82,7 +29,7 @@ class My
      *
      * @return     bool  true if allowed, else false
      */
-    public static function checkContext(int $context): bool
+    public static function checkCustomContext(int $context): ?bool
     {
         switch ($context) {
             case self::INSTALL:
@@ -171,23 +118,7 @@ class My
                 ;
         }
 
-        return false;
-    }
-
-    /**
-     * Return array of module icon(s)
-     *
-     * [light_mode_icon_url, dark_mode_icon_url] or [both_modes_icon_url]
-     *
-     * @return     array<string>
-     */
-    public static function icons(): array
-    {
-        // Comment second line if you only have one icon.svg for both mode
-        return [
-            urldecode(dcPage::getPF(self::id() . '/icon.svg')),         // Light (or both) mode(s)
-            urldecode(dcPage::getPF(self::id() . '/icon-dark.svg')),    // Dark mode
-        ];
+        return null;
     }
 
     /**
@@ -197,7 +128,7 @@ class My
      */
     public static function urlScheme(): string
     {
-        return '/' . preg_quote(dcCore::app()->adminurl->get('admin.plugin.' . self::id())) . '(&.*)?$/';
+        return '/' . preg_quote(dcCore::app()->admin->url->get('admin.plugin.' . self::id())) . '(&.*)?$/';
     }
 
     /**
@@ -209,6 +140,6 @@ class My
      */
     public static function makeUrl(array $params = []): string
     {
-        return dcCore::app()->adminurl->get('admin.plugin.' . self::id(), $params);
+        return dcCore::app()->admin->url->get('admin.plugin.' . self::id(), $params);
     }
 }

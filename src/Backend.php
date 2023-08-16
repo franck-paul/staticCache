@@ -15,25 +15,22 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\staticCache;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Backend extends dcNsProcess
+class Backend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::BACKEND);
-
-        return static::$init;
+        return self::status(My::checkContext(My::BACKEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        dcCore::app()->addBehavior('dcMaintenanceInit', [BackendBehaviors::class, 'dcMaintenanceInit']);
+        dcCore::app()->addBehavior('dcMaintenanceInit', BackendBehaviors::dcMaintenanceInit(...));
 
         return true;
     }

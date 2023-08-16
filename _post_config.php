@@ -12,13 +12,12 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use Dotclear\App;
 use Dotclear\Helper\Network\Http;
 use Dotclear\Plugin\staticCache\StaticCache;
 use Dotclear\Plugin\staticCache\StaticCacheControl;
 
 // Add plugin namespace as it is still not loaded yet
-App::autoload()->addNamespace(
+Autoloader::me()->addNamespace(
     implode(Autoloader::NS_SEP, ['', 'Dotclear', 'Plugin', basename(__DIR__)]),
     __DIR__ . DIRECTORY_SEPARATOR . 'src'
 );
@@ -67,7 +66,7 @@ if (defined('DC_BLOG_ID')) { // Public area detection
                 exit;
             }
         }
-    } catch (Exception $e) {
+    } catch (Exception) {
     } finally {
         unset($cache);
     }
