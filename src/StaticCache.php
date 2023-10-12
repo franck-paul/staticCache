@@ -20,10 +20,10 @@ use Exception;
 
 class StaticCache
 {
-    protected $cache_dir;
-    protected $cache_key;
+    protected string $cache_dir;
+    protected string $cache_key;
 
-    public function __construct($cache_dir, $cache_key)
+    public function __construct(string $cache_dir, string $cache_key)
     {
         $cache_dir = Path::real($cache_dir, false);
 
@@ -40,14 +40,14 @@ class StaticCache
         $this->cache_dir = sprintf('%s/%s/%s/%s/%s', $cache_dir, $k[0], $k[1], $k[2], $cache_key);
     }
 
-    public static function initFromURL($cache_dir, $url)
+    public static function initFromURL(string $cache_dir, string $url): self
     {
-        $host = preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', (string) $url);
+        $host = (string) preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', (string) $url);
 
         return new self($cache_dir, md5($host));
     }
 
-    public function storeMtime($mtime)
+    public function storeMtime(int $mtime): void
     {
         $file = $this->cache_dir . '/mtime';
         $dir  = dirname($file);
@@ -59,7 +59,7 @@ class StaticCache
         touch($file, $mtime);
     }
 
-    public function getMtime()
+    public function getMtime(): int|bool
     {
         $file = $this->cache_dir . '/mtime';
 
@@ -70,7 +70,18 @@ class StaticCache
         return filemtime($file);
     }
 
-    public function storePage($key, $content_type, $content, $mtime, $headers)
+    /**
+     * Stores a page.
+     *
+     * @param      string           $key           The key
+     * @param      string           $content_type  The content type
+     * @param      string           $content       The content
+     * @param      int              $mtime         The mtime
+     * @param      array<string>    $headers       The headers
+     *
+     * @throws     Exception
+     */
+    public function storePage(string $key, string $content_type, string $content, int $mtime, array $headers): void
     {
         if (trim((string) $content) == '') {
             throw new Exception('No content to cache');
@@ -128,7 +139,7 @@ class StaticCache
         Files::inheritChmod($file);
     }
 
-    public function fetchPage($key, $mtime)
+    public function fetchPage(string $key, int $mtime): bool
     {
         $file = $this->getCacheFileName($key);
         if (!file_exists($file) || !is_readable($file) || !Files::isDeletable($file)) {
@@ -168,17 +179,17 @@ class StaticCache
         return true;
     }
 
-    public function dropPage($key)
+    public function dropPage(string $key): bool
     {
         $file = $this->getCacheFileName($key);
         if (!file_exists($file) || !Files::isDeletable($file)) {
             return false;
         }
 
-        unlink($file);
+        return unlink($file);
     }
 
-    public function getPageFile($key)
+    public function getPageFile(string $key): string|bool
     {
         $file = $this->getCacheFileName($key);
         if (file_exists($file)) {
@@ -188,7 +199,7 @@ class StaticCache
         return false;
     }
 
-    protected function getCacheFileName($key)
+    protected function getCacheFileName(string $key): string
     {
         $key = md5($key);
         $k   = str_split($key, 2);

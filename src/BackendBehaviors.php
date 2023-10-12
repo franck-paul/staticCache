@@ -24,8 +24,10 @@ class BackendBehaviors
      *
      * @param  Maintenance $maintenance
      */
-    public static function dcMaintenanceInit(Maintenance $maintenance)
+    public static function dcMaintenanceInit(Maintenance $maintenance): string
     {
         $maintenance->addTask(StaticCache::class);
+
+        return '';
     }
 }

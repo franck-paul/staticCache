@@ -18,10 +18,8 @@ use dcCore;
 
 class StaticCacheControl
 {
-    public static function cacheCurrentBlog()
+    public static function cacheCurrentBlog(): bool
     {
-        $ret = true; // All blogs should be cached
-
         // DC_BLOG_ID defined : public, otherwise admin
         $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : dcCore::app()->blog->id);
 
@@ -29,17 +27,18 @@ class StaticCacheControl
             // Only some blogs should be cached
             if (!in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_ON))) {
                 // Current blog is not in the "ON" list
-                $ret = false;
+                return false;
             }
         }
         if (defined('DC_SC_CACHE_BLOGS_OFF') && DC_SC_CACHE_BLOGS_OFF != '') {
             // Some blogs should not be cached
             if (in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_OFF))) {
                 // Current blog is in the "OFF" list
-                $ret = false;
+                return false;
             }
         }
 
-        return $ret;
+        // All blogs should be cached
+        return true;
     }
 }

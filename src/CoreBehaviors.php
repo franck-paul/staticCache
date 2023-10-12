@@ -15,15 +15,16 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\staticCache;
 
 use dcCore;
+use Dotclear\Database\Cursor;
 use Dotclear\Helper\Network\Http;
 use Exception;
 
 class CoreBehaviors
 {
-    public static function coreBlogAfterTriggerBlog($cur)
+    public static function coreBlogAfterTriggerBlog(Cursor $cur): string
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
-            return;
+            return '';
         }
 
         try {
@@ -32,12 +33,19 @@ class CoreBehaviors
         } catch (Exception) {
             // Ignore exceptions
         }
+
+        return '';
     }
 
-    public static function urlHandlerServeDocument($result)
+    /**
+     * @param      array<string, mixed>   $result  The result
+     *
+     * @return     string
+     */
+    public static function urlHandlerServeDocument(array $result): string
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
-            return;
+            return '';
         }
 
         # Check requested URL
@@ -46,7 +54,7 @@ class CoreBehaviors
             $excluded = array_merge($excluded, explode(',', DC_SC_EXCLUDED_URL));
         }
         if (in_array(dcCore::app()->url->type, $excluded)) {
-            return;
+            return '';
         }
 
         try {
@@ -80,16 +88,18 @@ class CoreBehaviors
         } catch (Exception) {
             // Ignore exceptions
         }
+
+        return '';
     }
 
-    public static function publicBeforeDocumentV2()
+    public static function publicBeforeDocumentV2(): string
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
-            return;
+            return '';
         }
 
         if (!empty($_POST)) {
-            return;
+            return '';
         }
 
         try {
@@ -108,5 +118,7 @@ class CoreBehaviors
         } catch (Exception) {
             // Ignore exceptions
         }
+
+        return '';
     }
 }
