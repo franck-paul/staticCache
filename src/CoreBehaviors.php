@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\staticCache;
 
 use dcCore;
+use Dotclear\App;
 use Dotclear\Database\Cursor;
 use Dotclear\Helper\Network\Http;
 use Exception;
@@ -110,7 +111,7 @@ class CoreBehaviors
                 if (dcCore::app()->blog->url == Http::getSelfURI()) {
                     dcCore::app()->blog->publishScheduledEntries();
                 }
-                Http::cache([$file], dcCore::app()->cache['mod_ts']);
+                Http::cache([(string) $file], App::cache()->getTimes());
                 if ($cache->fetchPage($_SERVER['REQUEST_URI'], dcCore::app()->blog->upddt)) {
                     exit;
                 }
