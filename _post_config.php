@@ -61,7 +61,7 @@ if (defined('DC_BLOG_ID')) { // Public area detection
         $file = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
         if ($file !== false) {
-            Http::cache([$file], [$mtime]);
+            Http::cache([(string) $file], [$mtime]);
             if ($cache->fetchPage($_SERVER['REQUEST_URI'], $mtime)) {
                 exit;
             }

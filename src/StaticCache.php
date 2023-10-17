@@ -27,11 +27,11 @@ class StaticCache
     {
         $cache_dir = Path::real($cache_dir, false);
 
-        if (!is_dir($cache_dir)) {
+        if ($cache_dir !== false && !is_dir($cache_dir)) {
             Files::makeDir($cache_dir);
         }
 
-        if (!is_writable($cache_dir)) {
+        if ($cache_dir === false || !is_writable($cache_dir)) {
             throw new Exception('Cache directory is not writable.');
         }
 
@@ -59,6 +59,11 @@ class StaticCache
         touch($file, $mtime);
     }
 
+    /**
+     * Gets the mtime.
+     *
+     * @return     false|int  The mtime.
+     */
     public function getMtime(): int|bool
     {
         $file = $this->cache_dir . '/mtime';
