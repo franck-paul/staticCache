@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
-use dcCore;
+use Dotclear\App;
 
 class StaticCacheControl
 {
     public static function cacheCurrentBlog(): bool
     {
         // DC_BLOG_ID defined : public, otherwise admin
-        $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : dcCore::app()->blog->id);
+        $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : App::blog()->id());
 
         if (defined('DC_SC_CACHE_BLOGS_ON') && DC_SC_CACHE_BLOGS_ON != '') {
             // Only some blogs should be cached

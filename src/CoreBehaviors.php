@@ -29,7 +29,7 @@ class CoreBehaviors
         }
 
         try {
-            $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, dcCore::app()->blog->url);
+            $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, App::blog()->url());
             $cache->storeMtime(strtotime($cur->blog_upddt));
         } catch (Exception) {
             // Ignore exceptions
@@ -108,11 +108,11 @@ class CoreBehaviors
             $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
             if ($file !== false) {
-                if (dcCore::app()->blog->url == Http::getSelfURI()) {
-                    dcCore::app()->blog->publishScheduledEntries();
+                if (App::blog()->url() == Http::getSelfURI()) {
+                    App::blog()->publishScheduledEntries();
                 }
                 Http::cache([(string) $file], App::cache()->getTimes());
-                if ($cache->fetchPage($_SERVER['REQUEST_URI'], dcCore::app()->blog->upddt)) {
+                if ($cache->fetchPage($_SERVER['REQUEST_URI'], App::blog()->upddt())) {
                     exit;
                 }
             }
