@@ -29,7 +29,7 @@ class CoreBehaviors
 
         try {
             $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, App::blog()->url());
-            $cache->storeMtime(strtotime($cur->blog_upddt));
+            $cache->storeMtime((int) strtotime($cur->blog_upddt));
         } catch (Exception) {
             // Ignore exceptions
         }

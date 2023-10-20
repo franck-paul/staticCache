@@ -21,7 +21,6 @@ use Exception;
 class StaticCache
 {
     protected string $cache_dir;
-    protected string $cache_key;
 
     public function __construct(string $cache_dir, string $cache_key)
     {
