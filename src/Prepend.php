@@ -26,7 +26,7 @@ class Prepend extends Process
         }
 
         if (!defined('DC_SC_CACHE_DIR')) {
-            define('DC_SC_CACHE_DIR', DC_TPL_CACHE . DIRECTORY_SEPARATOR . 'dcstaticcache');
+            define('DC_SC_CACHE_DIR', App::config()->cacheRoot() . DIRECTORY_SEPARATOR . 'dcstaticcache');
         }
 
         return self::status(My::checkContext(My::PREPEND) && DC_SC_CACHE_ENABLE && function_exists('touch'));

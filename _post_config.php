@@ -12,6 +12,7 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use Dotclear\App;
 use Dotclear\Helper\Network\Http;
 use Dotclear\Plugin\staticCache\StaticCache;
 use Dotclear\Plugin\staticCache\StaticCacheControl;
@@ -30,7 +31,7 @@ if (!defined('DC_SC_CACHE_ENABLE')) {
 }
 
 if (!defined('DC_SC_CACHE_DIR')) {
-    define('DC_SC_CACHE_DIR', DC_TPL_CACHE . DIRECTORY_SEPARATOR . 'dcstaticcache');
+    define('DC_SC_CACHE_DIR', App::config()->cacheRoot() . DIRECTORY_SEPARATOR . 'dcstaticcache');
 }
 
 if (!DC_SC_CACHE_ENABLE) {
