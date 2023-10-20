@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
-use dcCore;
 use Dotclear\App;
 use Dotclear\Database\Cursor;
 use Dotclear\Helper\Network\Http;
@@ -54,7 +53,7 @@ class CoreBehaviors
         if (defined('DC_SC_EXCLUDED_URL')) {
             $excluded = array_merge($excluded, explode(',', DC_SC_EXCLUDED_URL));
         }
-        if (in_array(dcCore::app()->url->type, $excluded)) {
+        if (in_array(App::url()->type, $excluded)) {
             return '';
         }
 
@@ -69,7 +68,7 @@ class CoreBehaviors
             }
 
             # This is a post with a password, no cache
-            if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && dcCore::app()->ctx->posts->post_password) {
+            if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && App::frontend()->context()->posts->post_password) {
                 $do_cache = false;
             }
 

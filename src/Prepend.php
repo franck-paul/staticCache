@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Prepend extends Process
@@ -38,7 +38,7 @@ class Prepend extends Process
             return false;
         }
 
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'urlHandlerServeDocument'  => CoreBehaviors::urlHandlerServeDocument(...),
             'publicBeforeDocumentV2'   => CoreBehaviors::publicBeforeDocumentV2(...),
             'coreBlogAfterTriggerBlog' => CoreBehaviors::coreBlogAfterTriggerBlog(...),

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Module\MyPlugin;
 
 /**
@@ -35,7 +35,7 @@ class My extends MyPlugin
             self::BACKEND,
             self::MANAGE,
             self::MENU,
-            self::WIDGETS => defined('DC_CONTEXT_ADMIN') && dcCore::app()->auth->isSuperAdmin(),
+            self::WIDGETS => !App::task()->checkContext('FRONTEND') && App::auth()->isSuperAdmin(),
             default       => null,
         };
     }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Backend extends Process
@@ -30,7 +30,7 @@ class Backend extends Process
             return false;
         }
 
-        dcCore::app()->addBehavior('dcMaintenanceInit', BackendBehaviors::dcMaintenanceInit(...));
+        App::behavior()->addBehavior('dcMaintenanceInit', BackendBehaviors::dcMaintenanceInit(...));
 
         return true;
     }
