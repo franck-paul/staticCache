@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="staticCache">
     <name>Static Cache</name>
-    <version>3.0</version>
+    <version>4.0</version>
     <author>Olivier Meunier and contributors</author>
     <desc>Blog pages static cache</desc>
-    <file>https://github.com/franck-paul/staticCache/releases/download/3.0/plugin-staticCache-3.0.zip</file>
-    <da:dcmin>2.27</da:dcmin>
+    <file>https://github.com/franck-paul/staticCache/releases/download/4.0/plugin-staticCache-4.0.zip</file>
+    <da:dcmin>2.28</da:dcmin>
     <da:details>https://open-time.net/?q=staticCache</da:details>
     <da:support>https://github.com/franck-paul/staticCache</da:support>
   </module>
