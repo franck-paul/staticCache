@@ -31,7 +31,7 @@ if (!defined('DC_SC_CACHE_ENABLE')) {
 }
 
 if (!defined('DC_SC_CACHE_DIR')) {
-    define('DC_SC_CACHE_DIR', App::config()->cacheRoot() . DIRECTORY_SEPARATOR . 'dcstaticcache');
+    define('DC_SC_CACHE_DIR', DC_TPL_CACHE /* App::config()->cacheRoot() */ . DIRECTORY_SEPARATOR . 'dcstaticcache');
 }
 
 if (!DC_SC_CACHE_ENABLE) {

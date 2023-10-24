@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\staticCache;
 
+use ArrayObject;
 use Dotclear\App;
 use Dotclear\Database\Cursor;
 use Dotclear\Helper\Network\Http;
@@ -38,11 +39,11 @@ class CoreBehaviors
     }
 
     /**
-     * @param      array<string, mixed>   $result  The result
+     * @param      ArrayObject<string, mixed>   $result  The result
      *
      * @return     string
      */
-    public static function urlHandlerServeDocument(array $result): string
+    public static function urlHandlerServeDocument(ArrayObject $result): string
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
             return '';

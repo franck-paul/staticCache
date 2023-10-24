@@ -15,7 +15,7 @@ $this->registerModule(
     'Static Cache',
     'Blog pages static cache',
     'Olivier Meunier and contributors',
-    '3.0',
+    '4.0',
     [
         'requires' => [['core', '2.28']],
         'type'     => 'plugin',
