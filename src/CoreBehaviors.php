@@ -29,8 +29,10 @@ class CoreBehaviors
         }
 
         try {
-            $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, App::blog()->url());
-            $cache->storeMtime((int) strtotime($cur->blog_upddt));
+            if (defined('DC_SC_CACHE_DIR')) {
+                $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, App::blog()->url());
+                $cache->storeMtime((int) strtotime($cur->blog_upddt));
+            }
         } catch (Exception) {
             // Ignore exceptions
         }
@@ -59,32 +61,34 @@ class CoreBehaviors
         }
 
         try {
-            $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
+            if (defined('DC_SC_CACHE_DIR')) {
+                $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
 
-            $do_cache = true;
+                $do_cache = true;
 
-            # We have POST data, no cache
-            if (!empty($_POST)) {
-                $do_cache = false;
-            }
+                # We have POST data, no cache
+                if (!empty($_POST)) {
+                    $do_cache = false;
+                }
 
-            # This is a post with a password, no cache
-            if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && App::frontend()->context()->posts->post_password) {
-                $do_cache = false;
-            }
+                # This is a post with a password, no cache
+                if (($result['tpl'] == 'post.html' || $result['tpl'] == 'page.html') && App::frontend()->context()->posts->post_password) {
+                    $do_cache = false;
+                }
 
-            if ($do_cache) {
-                # No POST data or COOKIE, do cache
-                $cache->storePage(
-                    $_SERVER['REQUEST_URI'],
-                    $result['content_type'],
-                    $result['content'],
-                    $result['blogupddt'],
-                    $result['headers']
-                );
-            } else {
-                # Remove cache file
-                $cache->dropPage($_SERVER['REQUEST_URI']);
+                if ($do_cache) {
+                    # No POST data or COOKIE, do cache
+                    $cache->storePage(
+                        $_SERVER['REQUEST_URI'],
+                        $result['content_type'],
+                        $result['content'],
+                        $result['blogupddt'],
+                        $result['headers']
+                    );
+                } else {
+                    # Remove cache file
+                    $cache->dropPage($_SERVER['REQUEST_URI']);
+                }
             }
         } catch (Exception) {
             // Ignore exceptions
@@ -104,16 +108,18 @@ class CoreBehaviors
         }
 
         try {
-            $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
-            $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
+            if (defined('DC_SC_CACHE_DIR')) {
+                $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
+                $file  = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
-            if ($file !== false) {
-                if (App::blog()->url() == Http::getSelfURI()) {
-                    App::blog()->publishScheduledEntries();
-                }
-                Http::cache([(string) $file], App::cache()->getTimes());
-                if ($cache->fetchPage($_SERVER['REQUEST_URI'], App::blog()->upddt())) {
-                    exit;
+                if ($file !== false) {
+                    if (App::blog()->url() == Http::getSelfURI()) {
+                        App::blog()->publishScheduledEntries();
+                    }
+                    Http::cache([(string) $file], App::cache()->getTimes());
+                    if ($cache->fetchPage($_SERVER['REQUEST_URI'], App::blog()->upddt())) {
+                        exit;
+                    }
                 }
             }
         } catch (Exception) {

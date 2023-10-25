@@ -30,7 +30,7 @@ if (!defined('DC_SC_CACHE_ENABLE')) {
     define('DC_SC_CACHE_ENABLE', false);
 }
 
-if (!defined('DC_SC_CACHE_DIR')) {
+if (!defined('DC_SC_CACHE_DIR') && defined('DC_TPL_CACHE')) {
     define('DC_SC_CACHE_DIR', DC_TPL_CACHE /* App::config()->cacheRoot() */ . DIRECTORY_SEPARATOR . 'dcstaticcache');
 }
 
@@ -53,18 +53,20 @@ if (defined('DC_BLOG_ID')) { // Public area detection
     }
 
     try {
-        $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
+        if (defined('DC_SC_CACHE_DIR')) {
+            $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
 
-        if (($mtime = $cache->getMtime()) === false) {
-            throw new Exception();
-        }
+            if (($mtime = $cache->getMtime()) === false) {
+                throw new Exception();
+            }
 
-        $file = $cache->getPageFile($_SERVER['REQUEST_URI']);
+            $file = $cache->getPageFile($_SERVER['REQUEST_URI']);
 
-        if ($file !== false) {
-            Http::cache([(string) $file], [$mtime]);
-            if ($cache->fetchPage($_SERVER['REQUEST_URI'], $mtime)) {
-                exit;
+            if ($file !== false) {
+                Http::cache([(string) $file], [$mtime]);
+                if ($cache->fetchPage($_SERVER['REQUEST_URI'], $mtime)) {
+                    exit;
+                }
             }
         }
     } catch (Exception) {
