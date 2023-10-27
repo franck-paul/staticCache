@@ -122,6 +122,7 @@ class StaticCache
                     break;
                 }
             }
+
             if ($cache_header) {
                 fwrite($fp, $header . "\n");
             }
@@ -137,6 +138,7 @@ class StaticCache
         if (file_exists($file)) {
             unlink($file);
         }
+
         rename($tmp_file, $file);
         touch($file, $mtime);
         $this->storeMtime($mtime);

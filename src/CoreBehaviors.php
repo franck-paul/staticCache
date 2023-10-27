@@ -56,7 +56,8 @@ class CoreBehaviors
         if (defined('DC_SC_EXCLUDED_URL')) {
             $excluded = array_merge($excluded, explode(',', DC_SC_EXCLUDED_URL));
         }
-        if (in_array(App::url()->type, $excluded)) {
+
+        if (in_array(App::url()->getType(), $excluded)) {
             return '';
         }
 
@@ -67,7 +68,7 @@ class CoreBehaviors
                 $do_cache = true;
 
                 # We have POST data, no cache
-                if (!empty($_POST)) {
+                if ($_POST !== []) {
                     $do_cache = false;
                 }
 
@@ -103,7 +104,7 @@ class CoreBehaviors
             return '';
         }
 
-        if (!empty($_POST)) {
+        if ($_POST !== []) {
             return '';
         }
 
@@ -116,6 +117,7 @@ class CoreBehaviors
                     if (App::blog()->url() == Http::getSelfURI()) {
                         App::blog()->publishScheduledEntries();
                     }
+
                     Http::cache([(string) $file], App::cache()->getTimes());
                     if ($cache->fetchPage($_SERVER['REQUEST_URI'], App::blog()->upddt())) {
                         exit;

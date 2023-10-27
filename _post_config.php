@@ -48,7 +48,7 @@ if (defined('DC_BLOG_ID')) { // Public area detection
         return;
     }
 
-    if (!empty($_POST)) {
+    if ($_POST !== []) {
         return;
     }
 

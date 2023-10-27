@@ -23,19 +23,16 @@ class StaticCacheControl
         // DC_BLOG_ID defined : public, otherwise admin
         $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : App::blog()->id());
 
-        if (defined('DC_SC_CACHE_BLOGS_ON') && DC_SC_CACHE_BLOGS_ON != '') {
-            // Only some blogs should be cached
-            if (!in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_ON))) {
-                // Current blog is not in the "ON" list
-                return false;
-            }
+        // Only some blogs should be cached
+        if (defined('DC_SC_CACHE_BLOGS_ON') && DC_SC_CACHE_BLOGS_ON != '' && !in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_ON))) {
+            // Current blog is not in the "ON" list
+            return false;
         }
-        if (defined('DC_SC_CACHE_BLOGS_OFF') && DC_SC_CACHE_BLOGS_OFF != '') {
-            // Some blogs should not be cached
-            if (in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_OFF))) {
-                // Current blog is in the "OFF" list
-                return false;
-            }
+
+        // Some blogs should not be cached
+        if (defined('DC_SC_CACHE_BLOGS_OFF') && DC_SC_CACHE_BLOGS_OFF != '' && in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_OFF))) {
+            // Current blog is in the "OFF" list
+            return false;
         }
 
         // All blogs should be cached

@@ -32,10 +32,8 @@ class StaticCache extends MaintenanceTask
 
     public function execute()
     {
-        if (defined('DC_SC_CACHE_DIR')) {
-            if (is_dir(DC_SC_CACHE_DIR)) {
-                Files::deltree(DC_SC_CACHE_DIR);
-            }
+        if (defined('DC_SC_CACHE_DIR') && is_dir(DC_SC_CACHE_DIR)) {
+            Files::deltree(DC_SC_CACHE_DIR);
         }
 
         return true;
