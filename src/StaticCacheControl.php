@@ -24,13 +24,13 @@ class StaticCacheControl
         $blog_id = (defined('DC_BLOG_ID') ? DC_BLOG_ID : App::blog()->id());
 
         // Only some blogs should be cached
-        if (defined('DC_SC_CACHE_BLOGS_ON') && DC_SC_CACHE_BLOGS_ON != '' && !in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_ON))) {
+        if (defined('DC_SC_CACHE_BLOGS_ON') && constant('DC_SC_CACHE_BLOGS_ON') != '' && !in_array($blog_id, explode(',', constant('DC_SC_CACHE_BLOGS_ON')))) {
             // Current blog is not in the "ON" list
             return false;
         }
 
         // Some blogs should not be cached
-        if (defined('DC_SC_CACHE_BLOGS_OFF') && DC_SC_CACHE_BLOGS_OFF != '' && in_array($blog_id, explode(',', DC_SC_CACHE_BLOGS_OFF))) {
+        if (defined('DC_SC_CACHE_BLOGS_OFF') && constant('DC_SC_CACHE_BLOGS_OFF') != '' && in_array($blog_id, explode(',', constant('DC_SC_CACHE_BLOGS_OFF')))) {
             // Current blog is in the "OFF" list
             return false;
         }
