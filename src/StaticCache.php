@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
@@ -20,23 +21,39 @@ use Exception;
 
 class StaticCache
 {
-    protected string $cache_dir;
+    protected const DEFAULT_ROOT = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'staticcache';
+    protected const SCHEMA       = '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s';
+    protected const MTIME        = 'mtime';
 
-    public function __construct(string $cache_dir, string $cache_key)
-    {
-        $cache_dir = Path::real($cache_dir, false);
+    public function __construct(
+        protected string $cache_dir,
+        string $cache_key
+    ) {
+        $this->cache_dir = (string) Path::real($cache_dir, false);
 
-        if ($cache_dir !== false && !is_dir($cache_dir)) {
-            Files::makeDir($cache_dir);
+        // Fallback default dir if cache_dir is not defined
+        if ($this->cache_dir === '') {
+            $this->cache_dir = self::DEFAULT_ROOT;
         }
 
-        if ($cache_dir === false || !is_writable($cache_dir)) {
+        if (!is_dir($this->cache_dir)) {
+            Files::makeDir($this->cache_dir);
+        }
+
+        if (!is_writable($this->cache_dir)) {
             throw new Exception('Cache directory is not writable.');
         }
 
         $k = str_split($cache_key, 2);
 
-        $this->cache_dir = sprintf('%s/%s/%s/%s/%s', $cache_dir, $k[0], $k[1], $k[2], $cache_key);
+        $this->cache_dir = sprintf(
+            self::SCHEMA,
+            $this->cache_dir,
+            $k[0],
+            $k[1],
+            $k[2],
+            $cache_key
+        );
     }
 
     public static function initFromURL(string $cache_dir, string $url): self
@@ -48,7 +65,7 @@ class StaticCache
 
     public function storeMtime(int $mtime): void
     {
-        $file = $this->cache_dir . '/mtime';
+        $file = $this->cache_dir . DIRECTORY_SEPARATOR . self::MTIME;
         $dir  = dirname($file);
 
         if (!is_dir($dir)) {
@@ -65,7 +82,7 @@ class StaticCache
      */
     public function getMtime(): int|bool
     {
-        $file = $this->cache_dir . '/mtime';
+        $file = $this->cache_dir . DIRECTORY_SEPARATOR . self::MTIME;
 
         if (!file_exists($file)) {
             return false;
@@ -93,7 +110,7 @@ class StaticCache
 
         $file     = $this->getCacheFileName($key);
         $dir      = dirname($file);
-        $tmp_file = $dir . '/._' . basename($file);
+        $tmp_file = $dir . DIRECTORY_SEPARATOR . '._' . basename($file);
 
         if (!is_dir($dir)) {
             Files::makeDir($dir, true);
@@ -210,6 +227,13 @@ class StaticCache
         $key = md5($key);
         $k   = str_split($key, 2);
 
-        return $this->cache_dir . '/' . sprintf('%s/%s/%s/%s', $k[0], $k[1], $k[2], $key);
+        return sprintf(
+            self::SCHEMA,
+            $this->cache_dir,
+            $k[0],
+            $k[1],
+            $k[2],
+            $key
+        );
     }
 }
