@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
@@ -54,7 +55,7 @@ class CoreBehaviors
         # Check requested URL
         $excluded = ['preview', 'pagespreview'];
         if (defined('DC_SC_EXCLUDED_URL')) {
-            $excluded = array_merge($excluded, explode(',', DC_SC_EXCLUDED_URL));
+            $excluded = array_merge($excluded, explode(',', (string) DC_SC_EXCLUDED_URL));
         }
 
         if (in_array(App::url()->getType(), $excluded)) {
