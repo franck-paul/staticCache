@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
@@ -21,8 +22,6 @@ class BackendBehaviors
 {
     /**
      * Add maintenance task to delete static cache
-     *
-     * @param  Maintenance $maintenance
      */
     public static function dcMaintenanceInit(Maintenance $maintenance): string
     {

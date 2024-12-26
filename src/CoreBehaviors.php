@@ -43,8 +43,6 @@ class CoreBehaviors
 
     /**
      * @param      ArrayObject<string, mixed>   $result  The result
-     *
-     * @return     string
      */
     public static function urlHandlerServeDocument(ArrayObject $result): string
     {

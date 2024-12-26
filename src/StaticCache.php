@@ -58,7 +58,7 @@ class StaticCache
 
     public static function initFromURL(string $cache_dir, string $url): self
     {
-        $host = (string) preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', (string) $url);
+        $host = (string) preg_replace('#^(https?://(?:.+?))/(.*)$#', '$1', $url);
 
         return new self($cache_dir, md5($host));
     }
@@ -104,7 +104,7 @@ class StaticCache
      */
     public function storePage(string $key, string $content_type, string $content, int $mtime, array $headers): void
     {
-        if (trim((string) $content) == '') {
+        if (trim($content) === '') {
             throw new Exception('No content to cache');
         }
 
