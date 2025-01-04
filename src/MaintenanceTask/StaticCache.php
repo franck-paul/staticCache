@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
@@ -30,7 +31,7 @@ class StaticCache extends MaintenanceTask
         $this->description = __("It may be useful to empty this cache when modifying a theme's .html or .css files (or when updating a theme or plugin). Notice : with some hosters, the templates cache cannot be emptied with this plugin.");
     }
 
-    public function execute()
+    public function execute(): bool|int
     {
         if (defined('DC_SC_CACHE_DIR') && is_dir(DC_SC_CACHE_DIR)) {
             Files::deltree(DC_SC_CACHE_DIR);

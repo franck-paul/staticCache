@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
@@ -17,7 +18,7 @@ $this->registerModule(
     'Olivier Meunier and contributors',
     '4.4',
     [
-        'requires' => [['core', '2.28']],
+        'requires' => [['core', '2.33']],
         'type'     => 'plugin',
 
         'details'    => 'https://open-time.net/?q=staticCache',
