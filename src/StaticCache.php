@@ -183,7 +183,7 @@ class StaticCache
         $content_type = trim((string) fgets($fp));
 
         // Cope with malformed 1st line
-        if (empty(trim($content_type))) {
+        if (trim($content_type) === '') {
             // 1st line empty, cannot go further so remove the cache file
             fclose($fp);
             unlink($file);
