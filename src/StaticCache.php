@@ -182,6 +182,23 @@ class StaticCache
         // Get content-type, 1st line of cached file
         $content_type = trim((string) fgets($fp));
 
+        // Cope with malformed 1st line
+        if (empty(trim($content_type))) {
+            // 1st line empty, cannot go further so remove the cache file
+            fclose($fp);
+            unlink($file);
+
+            return false;
+        }
+        $mime = explode('/', trim($content_type));
+        if (count($mime) !== 2) {
+            // 1st line does not look like a mime type (as text/html), cannot go further so remove the cache file
+            fclose($fp);
+            unlink($file);
+
+            return false;
+        }
+
         // This first header might be not necessary (it should already be in stored headers in cache file)
         header('Content-Type: ' . $content_type . '; charset=UTF-8');
 
