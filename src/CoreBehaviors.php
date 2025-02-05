@@ -33,6 +33,13 @@ class CoreBehaviors
             if (defined('DC_SC_CACHE_DIR')) {
                 $cache = StaticCache::initFromURL(DC_SC_CACHE_DIR, App::blog()->url());
                 $cache->storeMtime((int) strtotime($cur->blog_upddt));
+
+                // Add a log entry
+                $curlog = App::log()->openLogCursor();
+                $curlog->setField('log_msg', sprintf('Trigger blog for: %s at %s', App::blog()->url(), $cur->blog_upddt));
+                $curlog->setField('log_table', My::id());
+                $curlog->setField('user_id', App::auth()->userID());
+                App::log()->addLog($curlog);
             }
         } catch (Exception) {
             // Ignore exceptions
