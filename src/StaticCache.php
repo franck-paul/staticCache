@@ -112,6 +112,7 @@ class StaticCache
         $dir      = dirname($file);
         $tmp_file = $dir . DIRECTORY_SEPARATOR . '._' . basename($file);
 
+        // Create cache directory if necessary
         if (!is_dir($dir)) {
             Files::makeDir($dir, true);
         }
@@ -152,14 +153,28 @@ class StaticCache
         fwrite($fp, $content);
         fclose($fp);
 
+        // Check again destination directory
+        if (!is_dir($dir)) {
+            Files::makeDir($dir, true);
+        }
+
+        // Remove old file if exists
         if (file_exists($file)) {
             unlink($file);
         }
 
-        rename($tmp_file, $file);
-        touch($file, $mtime);
-        $this->storeMtime($mtime);
-        Files::inheritChmod($file);
+        // Set final file and store datetime
+        if (file_exists($tmp_file)) {
+            rename($tmp_file, $file);
+            if (file_exists($file)) {
+                touch($file, $mtime);
+                $this->storeMtime($mtime);
+                Files::inheritChmod($file);
+            } else {
+                // Something goes wrong, remove temporary file
+                unlink($tmp_file);
+            }
+        }
     }
 
     public function fetchPage(string $key, int $mtime): bool
