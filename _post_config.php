@@ -53,7 +53,7 @@ if (defined('DC_BLOG_ID')) { // Public area detection
     }
 
     try {
-        $static_cache_dir = is_string($static_cache_dir = DC_SC_CACHE_DIR) ? $static_cache_dir : '';
+        $static_cache_dir = is_string($static_cache_dir = constant('DC_SC_CACHE_DIR')) ? $static_cache_dir : '';
         if ($static_cache_dir !== '') {
             $static_cache = new StaticCache($static_cache_dir, md5(Http::getHost()));
 
