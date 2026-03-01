@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
@@ -12,7 +13,6 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use Dotclear\App;
 use Dotclear\Helper\Network\Http;
 use Dotclear\Plugin\staticCache\StaticCache;
 use Dotclear\Plugin\staticCache\StaticCacheControl;
@@ -30,8 +30,8 @@ if (!defined('DC_SC_CACHE_ENABLE')) {
     define('DC_SC_CACHE_ENABLE', false);
 }
 
-if (!defined('DC_SC_CACHE_DIR') && defined('DC_TPL_CACHE')) {
-    define('DC_SC_CACHE_DIR', DC_TPL_CACHE /* App::config()->cacheRoot() */ . DIRECTORY_SEPARATOR . 'dcstaticcache');
+if (!defined('DC_SC_CACHE_DIR') && defined('DC_TPL_CACHE') && is_string(DC_TPL_CACHE)) {
+    define('DC_SC_CACHE_DIR', DC_TPL_CACHE . DIRECTORY_SEPARATOR . 'dcstaticcache');
 }
 
 if (!DC_SC_CACHE_ENABLE) {
@@ -53,24 +53,27 @@ if (defined('DC_BLOG_ID')) { // Public area detection
     }
 
     try {
-        if (defined('DC_SC_CACHE_DIR')) {
-            $cache = new StaticCache(DC_SC_CACHE_DIR, md5(Http::getHost()));
+        $static_cache_dir = is_string($static_cache_dir = DC_SC_CACHE_DIR) ? $static_cache_dir : '';
+        if ($static_cache_dir !== '') {
+            $static_cache = new StaticCache($static_cache_dir, md5(Http::getHost()));
 
-            if (($mtime = $cache->getMtime()) === false) {
+            if (($static_cache_mtime = $static_cache->getMtime()) === false) {
                 throw new Exception();
             }
 
-            $file = $cache->getPageFile($_SERVER['REQUEST_URI']);
-
-            if ($file !== false) {
-                Http::cache([(string) $file], [$mtime]);
-                if ($cache->fetchPage($_SERVER['REQUEST_URI'], $mtime)) {
-                    exit;
+            $static_cache_request_uri = isset($_SERVER['REQUEST_URI']) && is_string($static_cache_request_uri = $_SERVER['REQUEST_URI']) ? $static_cache_request_uri : '';
+            if ($static_cache_request_uri !== '') {
+                $static_cache_file = $static_cache->getPageFile($static_cache_request_uri);
+                if ($static_cache_file !== false) {
+                    Http::cache([(string) $static_cache_file], [$static_cache_mtime]);
+                    if ($static_cache->fetchPage($static_cache_request_uri, $static_cache_mtime)) {
+                        exit;
+                    }
                 }
             }
         }
     } catch (Exception) {
     } finally {
-        unset($cache);
+        unset($static_cache, $static_cache_dir, $static_cache_mtime, $static_cache_file, $static_cache_request_uri);
     }
 }

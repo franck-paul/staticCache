@@ -33,8 +33,9 @@ class StaticCache extends MaintenanceTask
 
     public function execute(): bool|int
     {
-        if (defined('DC_SC_CACHE_DIR') && is_dir(DC_SC_CACHE_DIR)) {
-            Files::deltree(DC_SC_CACHE_DIR);
+        $cache_dir = defined('DC_SC_CACHE_DIR') && is_string($cache_dir = constant('DC_SC_CACHE_DIR')) ? $cache_dir : '';
+        if ($cache_dir !== '' && is_dir($cache_dir)) {
+            Files::deltree($cache_dir);
         }
 
         return true;

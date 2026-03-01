@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief staticCache, a plugin for Dotclear 2
  *
