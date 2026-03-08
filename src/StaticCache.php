@@ -80,7 +80,7 @@ class StaticCache
      *
      * @return     false|int  The mtime.
      */
-    public function getMtime(): int|bool
+    public function getMtime(): int|false
     {
         $file = $this->cache_dir . DIRECTORY_SEPARATOR . self::MTIME;
 
@@ -244,7 +244,7 @@ class StaticCache
         return unlink($file);
     }
 
-    public function getPageFile(string $key): string|bool
+    public function getPageFile(string $key): string|false
     {
         $file = $this->getCacheFileName($key);
         if (file_exists($file)) {
