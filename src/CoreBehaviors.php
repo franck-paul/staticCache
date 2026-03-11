@@ -145,7 +145,7 @@ class CoreBehaviors
                         App::blog()->publishScheduledEntries();
                     }
 
-                    Http::cache([(string) $file], App::cache()->getTimes());
+                    Http::cache([$file], App::cache()->getTimes());
                     if ($cache->fetchPage($request_uri, App::blog()->upddt())) {
                         exit;
                     }
