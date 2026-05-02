@@ -22,7 +22,9 @@ use Exception;
 class StaticCache
 {
     protected const DEFAULT_ROOT = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'staticcache';
+
     protected const SCHEMA       = '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s';
+
     protected const MTIME        = 'mtime';
 
     public function __construct(
@@ -205,6 +207,7 @@ class StaticCache
 
             return false;
         }
+
         $mime = explode('/', trim($content_type));
         if (count($mime) !== 2) {
             // 1st line does not look like a mime type (as text/html), cannot go further so remove the cache file
