@@ -18,7 +18,9 @@ Optionnally:
 * `DC_SC_CACHE_BLOGS_ON` : list of blogs ID that should be cached (default: all blogs will be cached)
 * `DC_SC_CACHE_BLOGS_OFF` : list of blogs ID that must not be cached
 
-  Note: `DC_SC_CACHE_BLOGS_OFF` has higher priority than `DC_SC_CACHE_BLOGS_ON`
+  Notes:
+    * List of blogs ID must be given using a comma separated list, without any spaces, example: `mainblog,default`
+    * `DC_SC_CACHE_BLOGS_OFF` has higher priority than `DC_SC_CACHE_BLOGS_ON`
 
 * `DC_SC_EXCLUDED_URL` : list of URL types excluded from cache
 
