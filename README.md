@@ -11,7 +11,7 @@ Add the following constants in your main config.php file:
 
 * `DC_SC_CACHE_ENABLE` : set to false to disable caching system (default false)
 
-Optionnaly:
+Optionnally:
 
 * `DC_SC_CACHE_DIR`    : full path to cache directory (default: dcstaticcache in your cache directory)
 
