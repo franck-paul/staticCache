@@ -5,21 +5,25 @@
 [![Issues](https://img.shields.io/github/issues/franck-paul/staticCache)](https://github.com/franck-paul/staticCache/issues)
 [![License](https://img.shields.io/github/license/franck-paul/staticCache)](https://github.com/franck-paul/staticCache/blob/master/LICENSE)
 
-## CONFIGURATION
+## Configuration
 
-You may add the following constants in your main config.php file:
+Add the following constants in your main config.php file:
 
-* DC_SC_CACHE_ENABLE : set to false to disable caching system (default false)
-* DC_SC_CACHE_DIR    : full path to cache directory (default to dcstaticcache in your cache directory)
+* `DC_SC_CACHE_ENABLE` : set to false to disable caching system (default false)
 
-* DC_SC_CACHE_BLOGS_ON : list of blogs ID that should be cached (empty or not defined -> all blogs will be cached)
-* DC_SC_CACHE_BLOGS_OFF : list of blogs ID that must not be cached (empty or not defined -> no blogs will be cached)
-  Note: DC_SC_CACHE_BLOGS_OFF has higher priority than DC_SC_CACHE_BLOGS_ON
+Optionnaly:
 
-* DC_SC_EXCLUDED_URL : list of URL types excluded from cache
+* `DC_SC_CACHE_DIR`    : full path to cache directory (default: dcstaticcache in your cache directory)
+
+* `DC_SC_CACHE_BLOGS_ON` : list of blogs ID that should be cached (default: all blogs will be cached)
+* `DC_SC_CACHE_BLOGS_OFF` : list of blogs ID that must not be cached
+
+  Note: `DC_SC_CACHE_BLOGS_OFF` has higher priority than `DC_SC_CACHE_BLOGS_ON`
+
+* `DC_SC_EXCLUDED_URL` : list of URL types excluded from cache
 
 Note : preview and pagespreview URL types are always excluded
 
-## HINTS
+## Hint
 
-If you want cache to be called before *any* connection to database, add a require statement to \_post_config.php at the end of your configuration file.
+If you want cache to be called before *any* connection to database, add a require statement to `_post_config.php` at the end of your configuration file.
