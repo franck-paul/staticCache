@@ -21,11 +21,12 @@ use Exception;
 
 class StaticCache
 {
-    protected const DEFAULT_ROOT = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'staticcache';
+    /**
+     * Name of timestamp file in cache directory (for each blog)
+     */
+    protected const MTIME = 'mtime';
 
-    protected const SCHEMA       = '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s';
-
-    protected const MTIME        = 'mtime';
+    protected string $schema;
 
     public function __construct(
         protected string $cache_dir,
@@ -33,9 +34,11 @@ class StaticCache
     ) {
         $this->cache_dir = (string) Path::real($cache_dir, false);
 
+        $this->schema = implode(DIRECTORY_SEPARATOR, array_fill(0, 5, '%s'));
+
         // Fallback default dir if cache_dir is not defined
         if ($this->cache_dir === '') {
-            $this->cache_dir = self::DEFAULT_ROOT;
+            $this->cache_dir = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'staticcache';
         }
 
         if (!is_dir($this->cache_dir)) {
@@ -49,7 +52,7 @@ class StaticCache
         $k = str_split($cache_key, 2);
 
         $this->cache_dir = sprintf(
-            self::SCHEMA,
+            $this->schema,
             $this->cache_dir,
             $k[0],
             $k[1],
@@ -263,7 +266,7 @@ class StaticCache
         $k   = str_split($key, 2);
 
         return sprintf(
-            self::SCHEMA,
+            $this->schema,
             $this->cache_dir,
             $k[0],
             $k[1],
