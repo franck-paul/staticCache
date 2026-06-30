@@ -84,7 +84,7 @@ class CoreBehaviors
                 } else {
                     $tpl = isset($result['tpl']) && is_string($tpl = $result['tpl']) ? $tpl : '';
                     if ($tpl !== '' && in_array($tpl, ['post.html', 'page.html'], true)) {
-                        $password = App::frontend()->context()->posts instanceof MetaRecord && is_string($password = App::frontend()->context()->posts->post_password) ? $password : '';
+                        $password = App::frontend()->context()->posts instanceof MetaRecord ? App::frontend()->context()->posts->strField('post_password') : '';
                         if ($password !== '') {
                             // This is a post with a password, no cache
                             $do_cache = false;
