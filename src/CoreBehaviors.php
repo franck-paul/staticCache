@@ -66,7 +66,7 @@ class CoreBehaviors
             $excluded = array_merge($excluded, explode(',', (string) DC_SC_EXCLUDED_URL));
         }
 
-        if (in_array(App::url()->getType(), $excluded)) {
+        if (App::url()->isType($excluded)) {
             return '';
         }
 
