@@ -102,7 +102,10 @@ class CoreBehaviors
                      */
                     $headers = is_array($headers = $result['headers'] ?? []) ? $headers : [];
 
-                    if ($content_type !== '' && $content !== '' && !is_null($blogupddt)) {
+                    if ($content_type !== ''
+                        && $content   !== ''
+                        && !is_null($blogupddt)
+                    ) {
                         $cache->storePage(
                             $request_uri,
                             $content_type,

@@ -30,7 +30,10 @@ if (!defined('DC_SC_CACHE_ENABLE')) {
     define('DC_SC_CACHE_ENABLE', false);
 }
 
-if (!defined('DC_SC_CACHE_DIR') && defined('DC_TPL_CACHE') && is_string(DC_TPL_CACHE)) {
+if (!defined('DC_SC_CACHE_DIR')
+    && defined('DC_TPL_CACHE')
+    && is_string(DC_TPL_CACHE)
+) {
     define('DC_SC_CACHE_DIR', DC_TPL_CACHE . DIRECTORY_SEPARATOR . 'dcstaticcache');
 }
 

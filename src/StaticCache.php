@@ -185,7 +185,10 @@ class StaticCache
     public function fetchPage(string $key, int $mtime): bool
     {
         $file = $this->getCacheFileName($key);
-        if (!file_exists($file) || !is_readable($file) || !Files::isDeletable($file)) {
+        if (!file_exists($file)
+            || !is_readable($file)
+            || !Files::isDeletable($file)
+        ) {
             return false;
         }
 
