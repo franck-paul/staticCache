@@ -16,9 +16,9 @@ $this->registerModule(
     'Static Cache',
     'Blog pages static cache',
     'Olivier Meunier and contributors',
-    '6.3',
+    '7.0',
     [
-        'date'     => '2026-03-11T14:57:19+0100',
+        'date'     => '2026-08-03T10:11:47+0200',
         'requires' => [['core', '2.39']],
         'type'     => 'plugin',
 
