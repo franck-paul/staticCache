@@ -34,7 +34,7 @@ class CoreBehaviors
             $cache_dir = defined('DC_SC_CACHE_DIR') && is_string($cache_dir = constant('DC_SC_CACHE_DIR')) ? $cache_dir : '';
             if ($cache_dir !== '') {
                 $cache    = StaticCache::initFromURL($cache_dir, App::blog()->url());
-                $datetime = is_string($datetime = $cur->blog_upddt) ? $datetime : 'now';
+                $datetime = is_string($datetime = $cur->strField('blog_upddt', true)) ? $datetime : 'now';
                 $cache->storeMtime((int) strtotime($datetime));
 
                 // Add a log entry
