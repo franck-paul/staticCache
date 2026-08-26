@@ -23,6 +23,8 @@ class StaticCache
 {
     /**
      * Name of timestamp file in cache directory (for each blog)
+     *
+     * @var string MTIME
      */
     protected const MTIME = 'mtime';
 
