@@ -140,8 +140,8 @@ class StaticCache
             // Last-Modified: Mon, 14 Feb 2022 15:29:46 GMT
             // Cache-Control: must-revalidate, max-age=86400
             $cache_header = true;
-            foreach ($remove_headers as $remove) {
-                if (stripos($header, $remove) === 0) {
+            foreach ($remove_headers as $remove_header) {
+                if (stripos($header, $remove_header) === 0) {
                     $cache_header = false;
 
                     break;

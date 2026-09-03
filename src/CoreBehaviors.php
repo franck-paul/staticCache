@@ -24,7 +24,7 @@ use Exception;
 
 class CoreBehaviors
 {
-    public static function coreBlogAfterTriggerBlog(Cursor $cur): string
+    public static function coreBlogAfterTriggerBlog(Cursor $cursor): string
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
             return '';
@@ -34,7 +34,7 @@ class CoreBehaviors
             $cache_dir = defined('DC_SC_CACHE_DIR') && is_string($cache_dir = constant('DC_SC_CACHE_DIR')) ? $cache_dir : '';
             if ($cache_dir !== '') {
                 $cache    = StaticCache::initFromURL($cache_dir, App::blog()->url());
-                $datetime = is_string($datetime = $cur->strField('blog_upddt', true)) ? $datetime : 'now';
+                $datetime = is_string($datetime = $cursor->strField('blog_upddt', true)) ? $datetime : 'now';
                 $cache->storeMtime((int) strtotime($datetime));
 
                 // Add a log entry
@@ -52,9 +52,9 @@ class CoreBehaviors
     }
 
     /**
-     * @param      ArrayObject<string, mixed>   $result  The result
+     * @param      ArrayObject<string, mixed>   $arrayObject  The result
      */
-    public static function urlHandlerServeDocument(ArrayObject $result): string
+    public static function urlHandlerServeDocument(ArrayObject $arrayObject): string
     {
         if (!StaticCacheControl::cacheCurrentBlog()) {
             return '';
@@ -74,7 +74,7 @@ class CoreBehaviors
             $cache_dir   = defined('DC_SC_CACHE_DIR')     && is_string($cache_dir = constant('DC_SC_CACHE_DIR')) ? $cache_dir : '';
             $request_uri = isset($_SERVER['REQUEST_URI']) && is_string($request_uri = $_SERVER['REQUEST_URI']) ? $request_uri : '';
             if ($cache_dir !== '' && $request_uri !== '') {
-                $cache = new StaticCache($cache_dir, md5(Http::getHost()));
+                $staticCache = new StaticCache($cache_dir, md5(Http::getHost()));
 
                 $do_cache = true;
 
@@ -82,7 +82,7 @@ class CoreBehaviors
                     // We have POST data, no cache
                     $do_cache = false;
                 } else {
-                    $tpl = isset($result['tpl']) && is_string($tpl = $result['tpl']) ? $tpl : '';
+                    $tpl = isset($arrayObject['tpl']) && is_string($tpl = $arrayObject['tpl']) ? $tpl : '';
                     if ($tpl !== '' && in_array($tpl, ['post.html', 'page.html'], true)) {
                         $password = App::frontend()->context()->posts instanceof MetaRecord ? App::frontend()->context()->posts->strField('post_password') : '';
                         if ($password !== '') {
@@ -93,20 +93,20 @@ class CoreBehaviors
                 }
 
                 if ($do_cache) {
-                    $content_type = is_string($content_type = $result['content_type'] ?? '') ? $content_type : '';
-                    $content      = is_string($content = $result['content'] ?? '') ? $content : '';
-                    $blogupddt    = is_numeric($blogupddt = $result['blogupddt'] ?? null) ? (int) $blogupddt : null;
+                    $content_type = is_string($content_type = $arrayObject['content_type'] ?? '') ? $content_type : '';
+                    $content      = is_string($content = $arrayObject['content'] ?? '') ? $content : '';
+                    $blogupddt    = is_numeric($blogupddt = $arrayObject['blogupddt'] ?? null) ? (int) $blogupddt : null;
 
                     /**
                      * @var array<string>
                      */
-                    $headers = is_array($headers = $result['headers'] ?? []) ? $headers : [];
+                    $headers = is_array($headers = $arrayObject['headers'] ?? []) ? $headers : [];
 
                     if ($content_type !== ''
                         && $content   !== ''
                         && !is_null($blogupddt)
                     ) {
-                        $cache->storePage(
+                        $staticCache->storePage(
                             $request_uri,
                             $content_type,
                             $content,
@@ -116,7 +116,7 @@ class CoreBehaviors
                     }
                 } else {
                     // Remove cache file
-                    $cache->dropPage($request_uri);
+                    $staticCache->dropPage($request_uri);
                 }
             }
         } catch (Exception) {
@@ -140,8 +140,8 @@ class CoreBehaviors
             $cache_dir   = defined('DC_SC_CACHE_DIR')     && is_string($cache_dir = constant('DC_SC_CACHE_DIR')) ? $cache_dir : '';
             $request_uri = isset($_SERVER['REQUEST_URI']) && is_string($request_uri = $_SERVER['REQUEST_URI']) ? $request_uri : '';
             if ($cache_dir !== '' && $request_uri !== '') {
-                $cache = new StaticCache($cache_dir, md5(Http::getHost()));
-                $file  = $cache->getPageFile($request_uri);
+                $staticCache = new StaticCache($cache_dir, md5(Http::getHost()));
+                $file        = $staticCache->getPageFile($request_uri);
 
                 if ($file !== false) {
                     if (App::blog()->url() == Http::getSelfURI()) {
@@ -149,7 +149,7 @@ class CoreBehaviors
                     }
 
                     Http::cache([$file], App::cache()->getTimes());
-                    if ($cache->fetchPage($request_uri, App::blog()->upddt())) {
+                    if ($staticCache->fetchPage($request_uri, App::blog()->upddt())) {
                         exit;
                     }
                 }
