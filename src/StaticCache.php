@@ -79,6 +79,11 @@ class StaticCache
             Files::makeDir($dir, true);
         }
 
+        if (!file_exists($file)) {
+            file_put_contents($file, '');
+            Files::inheritChmod($file);
+        }
+
         touch($file, $mtime);
     }
 
@@ -195,6 +200,7 @@ class StaticCache
         }
 
         $page_mtime = filemtime($file);
+
         if ($mtime > $page_mtime) {
             return false;
         }
