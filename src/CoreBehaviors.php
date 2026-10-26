@@ -62,8 +62,10 @@ class CoreBehaviors
 
         // Check requested URL
         $excluded = ['preview', 'pagespreview'];
-        if (defined('DC_SC_EXCLUDED_URL')) {
-            $excluded = array_merge($excluded, explode(',', (string) DC_SC_EXCLUDED_URL));
+        // @phpstan-ignore booleanAnd.rightAlwaysTrue (false positive about is_string() and already string constant)
+        $config_excluded = defined('DC_SC_EXCLUDED_URL') && is_string($config_excluded = constant('DC_SC_EXCLUDED_URL')) ? $config_excluded : '';
+        if ($config_excluded !== '') {
+            $excluded = array_merge($excluded, explode(',', $config_excluded));
         }
 
         if (App::url()->isType($excluded)) {
