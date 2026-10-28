@@ -27,14 +27,14 @@ class StaticCacheControl
 
         // DC_SC_CACHE_BLOGS_ON list blogs which MUST be statically cached
         $blogs_on = defined('DC_SC_CACHE_BLOGS_ON') && is_string($blogs_on = constant('DC_SC_CACHE_BLOGS_ON')) ? trim($blogs_on) : '';
-        if ($blogs_on !== '' && !in_array($blog_id, explode(',', $blogs_on))) {
+        if ($blogs_on !== '' && !in_array($blog_id, explode(',', $blogs_on), true)) {
             // Current blog is not in the "ON" list
             return false;
         }
 
         // DC_SC_CACHE_BLOGS_OFF list blogs which MUST NOT be statically cached
         $blogs_off = defined('DC_SC_CACHE_BLOGS_OFF') && is_string($blogs_off = constant('DC_SC_CACHE_BLOGS_OFF')) ? trim($blogs_off) : '';
-        if ($blogs_off !== '' && in_array($blog_id, explode(',', $blogs_off))) {
+        if ($blogs_off !== '' && in_array($blog_id, explode(',', $blogs_off), true)) {
             // Current blog is in the "OFF" list
             return false;
         }
