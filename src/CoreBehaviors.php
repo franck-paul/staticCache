@@ -146,7 +146,7 @@ class CoreBehaviors
                 $file        = $staticCache->getPageFile($request_uri);
 
                 if ($file !== false) {
-                    if (App::blog()->url() == Http::getSelfURI()) {
+                    if (App::blog()->url() === Http::getSelfURI()) {
                         App::blog()->publishScheduledEntries();
                     }
 
