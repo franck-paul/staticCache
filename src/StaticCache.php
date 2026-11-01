@@ -130,7 +130,7 @@ class StaticCache
         }
 
         $fp = @fopen($tmp_file, 'wb');
-        if (!$fp) {
+        if ($fp === false) {
             throw new Exception('Unable to create cache file.');
         }
 
@@ -206,7 +206,7 @@ class StaticCache
         }
 
         $fp = @fopen($file, 'rb');
-        if (!$fp) {
+        if ($fp === false) {
             return false;
         }
 
