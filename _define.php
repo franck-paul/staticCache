@@ -19,9 +19,9 @@ if (isset($this) && is_object($this) && method_exists($this, 'registerModule') &
         'Static Cache',
         'Blog pages static cache',
         'Olivier Meunier and contributors',
-        '7.0',
+        '8.0',
         [
-            'date'     => '2026-08-03T10:11:47+0200',
+            'date'     => '2026-11-08T10:24:28+0100',
             'requires' => [['core', '2.40']],
             'type'     => 'plugin',
 
