@@ -1,12 +1,12 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="staticCache">
     <name>Static Cache</name>
-    <version>7.0</version>
+    <version>8.0</version>
     <author>Olivier Meunier and contributors</author>
     <desc>Blog pages static cache</desc>
-    <date>2026-08-03T10:11:47+0200</date>
-    <file>https://github.com/franck-paul/staticCache/releases/download/7.0/plugin-staticCache-7.0.zip</file>
-    <da:dcmin>2.39</da:dcmin>
+    <date>2026-11-08T10:24:28+0100</date>
+    <file>https://github.com/franck-paul/staticCache/releases/download/8.0/plugin-staticCache-8.0.zip</file>
+    <da:dcmin>2.40</da:dcmin>
     <da:details>https://dotclear.org/plugin/detail/staticCache</da:details>
     <da:support>https://github.com/franck-paul/staticCache</da:support>
   </module>
