@@ -37,7 +37,7 @@ if (!defined('DC_SC_CACHE_DIR')
     define('DC_SC_CACHE_DIR', DC_TPL_CACHE . DIRECTORY_SEPARATOR . 'dcstaticcache');
 }
 
-if (!DC_SC_CACHE_ENABLE) {
+if (!(bool) DC_SC_CACHE_ENABLE) {
     return;
 }
 

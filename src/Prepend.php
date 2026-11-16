@@ -32,7 +32,7 @@ class Prepend
             define('DC_SC_CACHE_DIR', App::config()->cacheRoot() . DIRECTORY_SEPARATOR . 'dcstaticcache');
         }
 
-        return self::status(My::checkContext(My::PREPEND) && DC_SC_CACHE_ENABLE && function_exists('touch'));
+        return self::status(My::checkContext(My::PREPEND) && (bool) DC_SC_CACHE_ENABLE && function_exists('touch'));
     }
 
     public static function process(): bool
