@@ -34,7 +34,7 @@ class StaticCache
         protected string $cache_dir,
         string $cache_key
     ) {
-        $this->cache_dir = (string) Path::real($cache_dir, false);
+        $this->cache_dir = Path::real($cache_dir, false);
 
         $this->schema = implode(DIRECTORY_SEPARATOR, array_fill(0, 5, '%s'));
 
